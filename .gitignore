@@ -1,0 +1,15 @@
+# Secrets / deploy keys
+.deploy_key
+.deploy_key.pub
+
+# Runtime state (keep local)
+state/xss_state.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS
+.DS_Store
