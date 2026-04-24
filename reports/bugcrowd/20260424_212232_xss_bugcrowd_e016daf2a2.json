@@ -1,0 +1,18 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/fd379503-137e-4d43-9e82-94fdff084820/xss",
+  "title": "xss - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:22:32.855465+00:00",
+  "how_to_find": [
+    "xss - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [
+    "<script>,",
+    "javascript:, and JavaScript event handler attributes like"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:22:32.855493+00:00",
+    "http_status": 200
+  }
+}

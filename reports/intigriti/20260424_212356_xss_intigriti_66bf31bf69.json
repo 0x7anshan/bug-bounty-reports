@@ -1,0 +1,22 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/hacking-tools/hunting-for-blind-cross-site-scripting-xss-vulnerabilities-a-complete-guide",
+  "title": "Hunting for blind XSS vulnerabilities: A complete guide",
+  "discovered_at": "2026-04-24T13:23:56.066561+00:00",
+  "how_to_find": [
+    "Hunting for blind XSS vulnerabilities: A complete guide\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Companies"
+  ],
+  "payloads_or_poc": [
+    "Building your blind XSS payloads",
+    "More advanced payloads",
+    "alert() or",
+    "Blind XSS vulnerabilities also require a specifically crafted payload that helps notify you of any execution as function calls that trigger visual dialogues (like the",
+    "That said, the delayed execution, hidden injection point and the requirement for a dedicated server that responds to incoming invocations to make your blind XSS payloads work make it much more difficult to exploit.",
+    "At the end of this article, we will also share with you some advanced blind XSS payloads and guide you on where to inject these."
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:23:56.066578+00:00",
+    "http_status": 200
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "seen": {
+    "https://bugcrowd.com/disclosures/fd379503-137e-4d43-9e82-94fdff084820/xss": {
+      "seen_at": "2026-04-24T13:23:50.475999+00:00",
+      "xss": true,
+      "json": "reports/bugcrowd/20260424_212350_xss_bugcrowd_e016daf2a2.json"
+    },
+    "https://bugcrowd.com/disclosures/655092e1-8200-4089-a42f-3803edfdeadd/reflected-xss-via-url-path-in-archive-endpoint": {
+      "seen_at": "2026-04-24T13:23:51.867953+00:00",
+      "xss": true,
+      "json": "reports/bugcrowd/20260424_212351_xss_bugcrowd_08cdd6ce21.json"
+    },
+    "https://bugcrowd.com/disclosures/d79469cf-e190-4fcb-8fd3-c0fda8f1eaa1/dom-based-cross-site-scripting-xss": {
+      "seen_at": "2026-04-24T13:23:53.226537+00:00",
+      "xss": true,
+      "json": "reports/bugcrowd/20260424_212353_xss_bugcrowd_0e920fb21e.json"
+    },
+    "https://www.intigriti.com/researchers/blog/hacking-tools/hunting-for-reflected-xss-vulnerabilities": {
+      "seen_at": "2026-04-24T13:23:54.722919+00:00",
+      "xss": true,
+      "json": "reports/intigriti/20260424_212354_xss_intigriti_db58fb56c4.json"
+    },
+    "https://www.intigriti.com/researchers/blog/hacking-tools/hunting-for-blind-cross-site-scripting-xss-vulnerabilities-a-complete-guide": {
+      "seen_at": "2026-04-24T13:23:56.206668+00:00",
+      "xss": true,
+      "json": "reports/intigriti/20260424_212356_xss_intigriti_66bf31bf69.json"
+    },
+    "https://www.yeswehack.com/community/solution-for-a-weird-xss-case": {
+      "seen_at": "2026-04-24T13:23:57.402600+00:00",
+      "xss": true,
+      "json": "reports/yeswehack/20260424_212357_xss_yeswehack_a5f7335e7b.json"
+    }
+  },
+  "last_run": "2026-04-24T13:23:58.002841+00:00"
+}

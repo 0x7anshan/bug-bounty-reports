@@ -1,0 +1,17 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/655092e1-8200-4089-a42f-3803edfdeadd/reflected-xss-via-url-path-in-archive-endpoint",
+  "title": "Reflected XSS via URL Path in /archive/ Endpoint - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:23:51.718519+00:00",
+  "how_to_find": [
+    "Reflected XSS via URL Path in /archive/ Endpoint - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [
+    "https://seabass.gsfc.nasa.gov/archive/<Img src=1 onerror=alert()>"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:23:51.718536+00:00",
+    "http_status": 200
+  }
+}

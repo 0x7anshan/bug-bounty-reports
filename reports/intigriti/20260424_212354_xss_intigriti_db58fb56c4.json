@@ -1,0 +1,22 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/hacking-tools/hunting-for-reflected-xss-vulnerabilities",
+  "title": "Reflected XSS: Advanced Exploitation Guide",
+  "discovered_at": "2026-04-24T13:23:54.582529+00:00",
+  "how_to_find": [
+    "Reflected XSS: Advanced Exploitation Guide | Intigriti\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Companies"
+  ],
+  "payloads_or_poc": [
+    "Step 3: Payload (proof of concept)",
+    "DOM-based XSS occurs when unsafe JavaScript code processes user-controllable data (from a DOM source) and passes it to a DOM sink. This allows attackers to craft JavaScript payloads that would be evaluated by the vulnera…",
+    "<script> tag, the injection string will look slightly different. We will discuss this case more in-depth shortly.",
+    "Now it's time to craft a working proof of concept that executes JavaScript in the victim's browser. To do so, your payload depends on 2 factors: 1) the context in which your input is reflected, and 2) any existing filter…",
+    "Let's take a look at several contexts in which your unsanitized input can appear, and also go through a few payloads that can help us break out of it and achieve code execution.",
+    "When your input is directly reflected in the HTML body without being wrapped in any specific tags or attributes, you have the most flexibility for exploitation. Start simple with payloads like:"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:23:54.582549+00:00",
+    "http_status": 200
+  }
+}
