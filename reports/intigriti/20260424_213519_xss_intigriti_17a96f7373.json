@@ -1,0 +1,22 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/hackademy/cross-site-scripting-xss",
+  "title": "XSS Explained: Types, Testing &amp; Prevention for Web Apps",
+  "discovered_at": "2026-04-24T13:35:19.337964+00:00",
+  "how_to_find": [
+    "XSS Explained: Types, Testing & Prevention for Web Apps\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Companies"
+  ],
+  "payloads_or_poc": [
+    "Example of an XSS payload triggering an XSS vulnerability",
+    "Reflected Cross-Site Scripting – XSS payload is delivered inside the HTTP request sent to the server and displayed immediately.",
+    "Stored Cross-Site Scripting – XSS payload is stored on the target server (e.g. in a database) and is delivered via the HTTP response.",
+    "DOM-based Cross-Site Scripting – XSS payload is entirely handled inside the browser (triggered by a sensitive and vulnerable method).",
+    "https://example.com/?user=%3Cscript%3Ealert(document.domain)%3C/script%3E",
+    "<b>Hi <script>alert(document.domain)</script></b>"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:19.337980+00:00",
+    "http_status": 200
+  }
+}

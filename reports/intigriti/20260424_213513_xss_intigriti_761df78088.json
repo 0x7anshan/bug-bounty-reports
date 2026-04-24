@@ -1,0 +1,22 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/bug-bytes/bug-bytes-70-gmail-xss-decrypting-https-without-mitm-haklukes-tiktok-tips",
+  "title": "Bug Bytes #70 - Gmail XSS, Decrypting HTTPS without MiTM &amp; Hakluke&#x27;s TikTok Tips",
+  "discovered_at": "2026-04-24T13:35:13.541933+00:00",
+  "how_to_find": [
+    "Article of the week",
+    "Writeup of the week",
+    "Videos of the week"
+  ],
+  "payloads_or_poc": [
+    "This is a cool DOM XSS found in Gmail. So, no recon, no looking for obscure or forgotten subdomains. @opnsec used the main site, focused on the postMessage API and understanding how the different iframes communicate with…",
+    "Transformations is a new tool by @jobertabma that helps find out how inputs are transformed by Web apps. For instance, let’s say that a server responds with `c1aa46d751f1ffa58481418667134109ac5f573c`, when you give it `t…",
+    "Polymorphic payloads: New image processing test suite snags Google Scholar",
+    "Did you know @metasploit recently added functionality for creating .NET Deserialization payloads like #YSoSerialNet does?"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:13.541954+00:00",
+    "http_status": 200
+  }
+}

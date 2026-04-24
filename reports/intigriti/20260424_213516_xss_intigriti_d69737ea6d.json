@@ -1,0 +1,21 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/bug-bytes/bug-bytes-160-invisible-sql-injection-reading-redacted-text-coinbases-largest-ever-bug-bounty",
+  "title": "Bug Bytes #160 - Invisible SQL Injection, Reading redacted text &amp; Coinbase&#x27;s largest-ever bug bounty",
+  "discovered_at": "2026-04-24T13:35:16.508620+00:00",
+  "how_to_find": [
+    "Vulnerability of the week",
+    "Writeup of the week",
+    "Tool of the week"
+  ],
+  "payloads_or_poc": [
+    "Exploring Python SSTI Payloads & Exploring mkfifo / nc Reverse Shell",
+    "A Samba’s horror story, CVE-2021-44142 & PoC",
+    "CVE-2021-26084 PoC write-up"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:16.508634+00:00",
+    "http_status": 200
+  }
+}

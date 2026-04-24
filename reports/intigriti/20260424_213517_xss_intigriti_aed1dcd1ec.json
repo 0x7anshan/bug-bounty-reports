@@ -1,0 +1,21 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/bug-bytes/bug-bytes-91-the-shortest-domain-weird-facebook-authentication-bypass-github-actions-secrets",
+  "title": "Bug Bytes #91 - The shortest domain, Weird Facebook authentication bypass &amp; GitHub Actions secrets",
+  "discovered_at": "2026-04-24T13:35:17.930978+00:00",
+  "how_to_find": [
+    "Video of the week",
+    "Writeups of the week",
+    "Tool of the week"
+  ],
+  "payloads_or_poc": [
+    "Forcing Firefox to Execute XSS Payloads during 302 Redirects",
+    "If you find an XSS but cannot execute it because the payload is reflected in the HTTP response Location header, it’s not useless. @QKaiser shows how browsers can be forced to not follow a 302 redirect, and execute the XS…",
+    "XSScope & Intro: Advanced XSS payload generator to use for increasing impact"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:17.930996+00:00",
+    "http_status": 200
+  }
+}

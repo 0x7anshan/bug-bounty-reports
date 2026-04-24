@@ -1,0 +1,19 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/1357c3ce-cc7e-4ce9-b53b-a943deabccbe/application-is-vulnerable-to-stored-xss",
+  "title": "Application is vulnerable to stored XSS - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:35:10.767960+00:00",
+  "how_to_find": [
+    "Application is vulnerable to stored XSS - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [
+    "An attacker could create some site application with injected malicious eval() function & utilize beef exploitation kind of tool to run malicious JavaScript payload into victim's browser & can craft various exploitation.",
+    "Creating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & …",
+    "xss payload executed & various data captured in xsshunter framework cookie, ip address of victim etc."
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:10.767972+00:00",
+    "http_status": 200
+  }
+}

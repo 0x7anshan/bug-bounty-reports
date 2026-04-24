@@ -1,0 +1,17 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/blog/business-insights/access-control-vulnerability-in-the-retail-industry-cross-site-scripting-xss-use",
+  "title": "Access control vulnerability in the retail industry. Cross-Site Scripting (XSS) use case.",
+  "discovered_at": "2026-04-24T13:35:12.215303+00:00",
+  "how_to_find": [
+    "Access control vulnerability in the retail industry. Cross-Site Scripting (XSS) use case.\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Companies"
+  ],
+  "payloads_or_poc": [
+    "‘In this case a hacker found a stored XSS, often the most impactful type of this bug, in a part of the website where a system of roles determined a user’s privileges. Using this vulnerability by injecting a payload into …"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:12.215319+00:00",
+    "http_status": 200
+  }
+}

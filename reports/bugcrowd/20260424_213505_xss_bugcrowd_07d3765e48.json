@@ -1,0 +1,15 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/14c02468-7535-4631-8cc0-bb6088c4e3a3/stored-xss-is-working",
+  "title": "Stored-xss is working - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:35:05.750184+00:00",
+  "how_to_find": [
+    "Stored-xss is working - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:05.750198+00:00",
+    "http_status": 200
+  }
+}

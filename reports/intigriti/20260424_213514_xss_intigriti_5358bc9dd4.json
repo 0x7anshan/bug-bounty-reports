@@ -1,0 +1,19 @@
+{
+  "platform": "intigriti",
+  "vuln": "xss",
+  "url": "https://www.intigriti.com/researchers/blog/bug-bytes/bug-bytes-71-20k-facebook-xss-levelup-0x06-naffys-notes",
+  "title": "Bug Bytes #71 - 20K Facebook XSS, LevelUp 0x06 &amp; Naffy&#x27;s Notes",
+  "discovered_at": "2026-04-24T13:35:14.998363+00:00",
+  "how_to_find": [
+    "Tool of the week",
+    "Writeup of the week",
+    "Videos of the week"
+  ],
+  "payloads_or_poc": [
+    "SANS @Mic Talk – Cloud Native Payloads: A Matryoshka Doll of Exploits"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:14.998390+00:00",
+    "http_status": 200
+  }
+}

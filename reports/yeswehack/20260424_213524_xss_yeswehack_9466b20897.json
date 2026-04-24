@@ -1,0 +1,18 @@
+{
+  "platform": "yeswehack",
+  "vuln": "xss",
+  "url": "https://www.yeswehack.com/community/Mutated-xss-chromium-sandbox-ekoparty",
+  "title": "Mutated XSS tool, $20k Chromium sandbox escape, Ekoparty bug bounty – hacker roundup",
+  "discovered_at": "2026-04-24T13:35:24.313762+00:00",
+  "how_to_find": [
+    "Mutated XSS tool, Chromium sandbox escape, Ekoparty bug bounty – YesWeHack ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog"
+  ],
+  "payloads_or_poc": [
+    "As for the general leaderboard, Rabhi, Xel and pocsir currently head both the overall 2024 and 2024 Q4 rankings so far. 👏",
+    "Our latest white-box penetration testing guide explores how to debug for JavaScript vulnerabilities. In testing a web application vulnerable to prototype pollution within a Docker container, Brumens’, another of our resi…"
+  ],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:24.313782+00:00",
+    "http_status": 200
+  }
+}

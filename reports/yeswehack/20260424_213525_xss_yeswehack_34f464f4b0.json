@@ -1,0 +1,15 @@
+{
+  "platform": "yeswehack",
+  "vuln": "xss",
+  "url": "https://www.yeswehack.com/community/pwnmachine-quick-update",
+  "title": "Quick Update on PwnMachine For Better Bug Bounty | YesWeHack Community",
+  "discovered_at": "2026-04-24T13:35:25.312575+00:00",
+  "how_to_find": [
+    "Quick Update on PwnMachine For Better Bug Bounty | YesWeHack Community ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog"
+  ],
+  "payloads_or_poc": [],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:25.312591+00:00",
+    "http_status": 200
+  }
+}

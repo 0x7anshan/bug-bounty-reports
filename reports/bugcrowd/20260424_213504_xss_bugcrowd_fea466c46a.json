@@ -1,0 +1,15 @@
+{
+  "platform": "bugcrowd",
+  "vuln": "xss",
+  "url": "https://bugcrowd.com/disclosures/29e6d45a-8829-42c9-a3b4-683d71318e37/xss-unescaped-output-of-directory-name",
+  "title": "XSS: Unescaped output of directory name - CrowdStream - Bugcrowd",
+  "discovered_at": "2026-04-24T13:35:04.156341+00:00",
+  "how_to_find": [
+    "XSS: Unescaped output of directory name - CrowdStream - Bugcrowd"
+  ],
+  "payloads_or_poc": [],
+  "source": {
+    "fetched_at": "2026-04-24T13:35:04.156365+00:00",
+    "http_status": 200
+  }
+}
