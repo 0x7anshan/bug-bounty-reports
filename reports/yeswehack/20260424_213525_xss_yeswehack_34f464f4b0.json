@@ -11,5 +11,21 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:25.312591+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 0,
+    "reasons": [
+      "yeswehack_community",
+      "no_payloads",
+      "some_howto",
+      "looks_like_general_content",
+      "no_xss_in_title_and_no_payload"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

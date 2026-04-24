@@ -11,5 +11,20 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:04.156365+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 60,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "no_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "XSS due to unescaped output: a user-controlled value is rendered without HTML/JS context-aware escaping.",
+    "poc": [],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

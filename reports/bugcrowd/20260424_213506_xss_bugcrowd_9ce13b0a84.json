@@ -13,5 +13,22 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:06.990000+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 80,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "has_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "XSS: user-controlled data reaches an executable context in the browser due to missing/incorrect output encoding or sanitization.",
+    "poc": [
+      "1) Send this link to any user https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27)"
+    ],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

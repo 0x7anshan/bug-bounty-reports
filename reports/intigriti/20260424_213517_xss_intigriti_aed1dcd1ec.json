@@ -17,5 +17,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:17.930996+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 30,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "has_steps",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "Forcing Firefox to Execute XSS Payloads during 302 Redirects",
+      "If you find an XSS but cannot execute it because the payload is reflected in the HTTP response Location header, it’s not useless. @QKaiser shows how browsers can be forced to not follow a 302 redirect, and execute the XS…",
+      "XSScope & Intro: Advanced XSS payload generator to use for increasing impact"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

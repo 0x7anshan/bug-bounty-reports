@@ -13,5 +13,22 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:12.215319+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 25,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "‘In this case a hacker found a stored XSS, often the most impactful type of this bug, in a part of the website where a system of roles determined a user’s privileges. Using this vulnerability by injecting a payload into …"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

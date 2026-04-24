@@ -18,5 +18,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:19.337980+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 25,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "Example of an XSS payload triggering an XSS vulnerability",
+      "Reflected Cross-Site Scripting – XSS payload is delivered inside the HTTP request sent to the server and displayed immediately.",
+      "Stored Cross-Site Scripting – XSS payload is stored on the target server (e.g. in a database) and is delivered via the HTTP response."
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

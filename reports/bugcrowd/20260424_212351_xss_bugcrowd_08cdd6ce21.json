@@ -13,5 +13,22 @@
   "source": {
     "fetched_at": "2026-04-24T13:23:51.718536+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 80,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "has_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Reflected XSS: attacker-controlled input is reflected in the response without correct encoding.",
+    "poc": [
+      "https://seabass.gsfc.nasa.gov/archive/<Img src=1 onerror=alert()>"
+    ],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

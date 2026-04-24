@@ -18,5 +18,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:23:54.582549+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 25,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "Step 3: Payload (proof of concept)",
+      "DOM-based XSS occurs when unsafe JavaScript code processes user-controllable data (from a DOM source) and passes it to a DOM sink. This allows attackers to craft JavaScript payloads that would be evaluated by the vulnera…",
+      "<script> tag, the injection string will look slightly different. We will discuss this case more in-depth shortly."
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

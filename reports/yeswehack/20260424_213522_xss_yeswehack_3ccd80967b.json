@@ -15,5 +15,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:22.027987+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 35,
+    "reasons": [
+      "yeswehack_community",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "So just exploit it on the website provided during the event and call alert(document.domain).",
+      "For each step submit your payload to @yeswehack",
+      "All your payloads will be tested on a default installation of Chrome 75"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

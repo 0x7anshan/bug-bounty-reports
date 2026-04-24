@@ -14,5 +14,23 @@
   "source": {
     "fetched_at": "2026-04-24T13:23:53.054486+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 80,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "has_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "DOM-based XSS: client-side data reaches a dangerous sink (e.g., innerHTML) without sanitization.",
+    "poc": [
+      "DOM-Based XSS is a type of web security vulnerability that exploits the Document Object Model (DOM) of a web page to inject and execute malicious JavaScript code in the victim's browser. Unlike other XSS vulnerabilities,…",
+      "Enter the payload in the 'School' field: <script>alert('XSS')</script>."
+    ],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

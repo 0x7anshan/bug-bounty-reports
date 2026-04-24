@@ -11,5 +11,20 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:05.750198+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 60,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "no_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Stored XSS: attacker-controlled input is persisted and later rendered to other users without proper output encoding.",
+    "poc": [],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

@@ -15,5 +15,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:10.767972+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": false,
+    "value_score": 80,
+    "reasons": [
+      "bugcrowd_disclosure",
+      "has_payloads",
+      "some_howto"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Stored XSS: attacker-controlled input is persisted and later rendered to other users without proper output encoding.",
+    "poc": [
+      "An attacker could create some site application with injected malicious eval() function & utilize beef exploitation kind of tool to run malicious JavaScript payload into victim's browser & can craft various exploitation.",
+      "Creating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & …",
+      "xss payload executed & various data captured in xsshunter framework cookie, ip address of victim etc."
+    ],
+    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
+    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
   }
 }

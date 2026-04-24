@@ -14,5 +14,23 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:24.313782+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 35,
+    "reasons": [
+      "yeswehack_community",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "As for the general leaderboard, Rabhi, Xel and pocsir currently head both the overall 2024 and 2024 Q4 rankings so far. 👏",
+      "Our latest white-box penetration testing guide explores how to debug for JavaScript vulnerabilities. In testing a web application vulnerable to prototype pollution within a Docker container, Brumens’, another of our resi…"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

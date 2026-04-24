@@ -18,5 +18,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:23.311163+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 35,
+    "reasons": [
+      "yeswehack_community",
+      "has_payloads",
+      "some_howto",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "It was composed of 3 steps of increasing difficulty in the form of extra security layer. All the payload are tested with Chrome 75.",
+      "1<div class=\"container\"> <h1>Js Canvas Gallery (easy)</h1> <ul> <li><a href=\"#L3N0YXRpYy9oZWFydC5qcw==.d635f5480983ee9eb49a2f9cbc010141cf2b7899\">heart</a></li> <li><a href=\"#L3N0YXRpYy90cmlhbmdsZS5qcw==.bf15ad95b9de4c9b8…",
+      "16 <script>17 const frame = document.getElementById(\"frame\");18"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }

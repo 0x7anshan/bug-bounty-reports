@@ -18,5 +18,24 @@
   "source": {
     "fetched_at": "2026-04-24T13:35:13.541954+00:00",
     "http_status": 200
+  },
+  "triage": {
+    "ignored": true,
+    "value_score": 30,
+    "reasons": [
+      "intigriti_article",
+      "has_payloads",
+      "has_steps",
+      "looks_like_general_content"
+    ]
+  },
+  "summary": {
+    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
+    "poc": [
+      "This is a cool DOM XSS found in Gmail. So, no recon, no looking for obscure or forgotten subdomains. @opnsec used the main site, focused on the postMessage API and understanding how the different iframes communicate with…",
+      "Transformations is a new tool by @jobertabma that helps find out how inputs are transformed by Web apps. For instance, let’s say that a server responds with `c1aa46d751f1ffa58481418667134109ac5f573c`, when you give it `t…",
+      "Polymorphic payloads: New image processing test suite snags Google Scholar"
+    ],
+    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
   }
 }
