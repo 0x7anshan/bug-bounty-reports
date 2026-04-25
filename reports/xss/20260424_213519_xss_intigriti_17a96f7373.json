@@ -37,5 +37,6 @@
       "https://example.com/?username=%3Cscript%3Edocument.write(%22test%22",
       "https://silvergoldbull.de/bt.html"
     ]
-  }
+  },
+  "platform_submitted_at": null
 }

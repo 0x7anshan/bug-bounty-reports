@@ -19,5 +19,6 @@
       "Our latest white-box penetration testing guide explores how to debug for JavaScript vulnerabilities. In testing a web application vulnerable to prototype pollution within a Docker container, Brumens’, another of our resident hackers, demonstrates how to debug JavaScript inside Visual Studio Code in order to track payloads throughout the code process and learn how security filters can hide vulnerab…"
     ],
     "affected_urls": []
-  }
+  },
+  "platform_submitted_at": "2024-11-18T14:02:00.000Z"
 }

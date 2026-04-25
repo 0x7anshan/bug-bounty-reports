@@ -33,8 +33,9 @@ import requests
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# Storage layout (per user): classify by vuln_type, not by platform.
 REPORTS_DIR = ROOT / "reports"
-WRITEUPS_DIR = ROOT / "writeups"
+EXPLANATIONS_DIR = ROOT / "explanations"  # Markdown explanations generated from JSON
 STATE_DIR = ROOT / "state"
 STATE_PATH = STATE_DIR / "crawler_state.json"  # kept local via .gitignore (should be ignored)
 
@@ -117,6 +118,56 @@ def parse_xml_locs(xml_text: str) -> list[str]:
     return locs
 
 
+def extract_jsonld_best_effort(html: str) -> dict[str, str]:
+    """Extract structured content from JSON-LD when sites are SPA-ish or noisy.
+
+    Returns keys: title, body, published_time (any may be missing).
+    """
+
+    out: dict[str, str] = {}
+    for m in re.finditer(
+        r"<script[^>]+type=['\"]application/ld\+json['\"][^>]*>(.*?)</script>",
+        html,
+        flags=re.I | re.S,
+    ):
+        raw = m.group(1).strip()
+        if not raw:
+            continue
+        # Some sites embed multiple JSON objects or invalid JSON with trailing commas.
+        # We keep it strict: if it doesn't parse, skip.
+        try:
+            data = json.loads(raw)
+        except Exception:
+            continue
+
+        candidates: list[dict[str, Any]] = []
+        if isinstance(data, dict):
+            candidates = [data]
+        elif isinstance(data, list):
+            candidates = [x for x in data if isinstance(x, dict)]
+
+        for obj in candidates:
+            t = str(obj.get("@type") or "").lower()
+            if t not in {"article", "blogposting", "newsarticle"}:
+                continue
+
+            title = (obj.get("headline") or obj.get("name") or "")
+            body = (obj.get("articleBody") or obj.get("description") or "")
+            published = obj.get("datePublished") or obj.get("dateCreated")
+
+            if isinstance(title, str) and title and "title" not in out:
+                out["title"] = title.strip()
+            if isinstance(body, str) and body and "body" not in out:
+                out["body"] = body.strip()
+            if isinstance(published, str) and published and "published_time" not in out:
+                out["published_time"] = published.strip()
+
+        if out.get("body"):
+            break
+
+    return out
+
+
 # ------------------------
 # Normalized schema
 # ------------------------
@@ -126,7 +177,14 @@ class NormalizedReport:
     title: str
     vuln_type: str
     vuln_type_raw: str | None
+
+    # User requirement: include the platform-native submission/publish timestamp.
+    # (Best-effort; may be null if platform doesn't expose it.)
+    platform_submitted_at: str | None
+
+    # Kept for backward compatibility / general use. For now we set it equal to platform_submitted_at.
     submitted_at: str | None
+
     platform: str
     report_url: str
     target_site: str | None
@@ -145,6 +203,7 @@ class NormalizedReport:
             "title": self.title,
             "vuln_type": self.vuln_type,
             "vuln_type_raw": self.vuln_type_raw,
+            "platform_submitted_at": self.platform_submitted_at,
             "submitted_at": self.submitted_at,
             "platform": self.platform,
             "report_url": self.report_url,
@@ -239,20 +298,42 @@ def extract_urls(text: str, *, max_items: int = 12) -> list[str]:
 
 
 def choose_target_site(report_url: str, body: str, affected_urls: list[str]) -> str | None:
-    # Best-effort: prefer first affected URL's host; otherwise derive from report URL host.
+    """Best-effort affected asset host.
+
+    Heuristics:
+    - Prefer hosts from affected_urls.
+    - Avoid common shorteners and platform domains.
+    - Fall back to a domain mentioned in body.
+    - Finally fall back to report_url host.
+    """
+
+    def _bad_host(h: str) -> bool:
+        h = (h or "").lower().strip()
+        if not h:
+            return True
+        # shorteners / trackers
+        if h in {"t.co", "bit.ly", "tinyurl.com"}:
+            return True
+        # platform domains (not the affected asset)
+        if any(p in h for p in ("hackerone.com", "bugcrowd.com", "intigriti.com", "yeswehack.com")):
+            return True
+        return False
+
     for u in affected_urls:
         try:
             h = urlparse(u).netloc
-            if h:
+            if h and not _bad_host(h):
                 return h
         except Exception:
             pass
-    # sometimes body includes a plain domain
-    m = re.search(r"\b([a-z0-9.-]+\.[a-z]{2,})\b", body.lower())
-    if m and m.group(1) and "hackerone.com" not in m.group(1) and "bugcrowd.com" not in m.group(1):
+
+    m = re.search(r"\b([a-z0-9.-]+\.[a-z]{2,})\b", (body or "").lower())
+    if m and m.group(1) and not _bad_host(m.group(1)):
         return m.group(1)
+
     try:
-        return urlparse(report_url).netloc
+        h = urlparse(report_url).netloc
+        return None if _bad_host(h) else h
     except Exception:
         return None
 
@@ -307,8 +388,13 @@ def fetch_hackerone(report_url: str, session: requests.Session, vuln_type: str) 
             vuln_raw = (vuln_raw or "") + f" (CWE-{cwe.get('id')})"
             vuln_raw = vuln_raw.strip() or None
 
-    submitted_at = data.get("created_at") or data.get("submitted_at") or data.get("disclosed_at")
-    submitted_at = submitted_at if isinstance(submitted_at, str) else None
+    # User requirement: keep the platform-native submission time when exposed.
+    # Prefer submitted_at (when present), then created_at, then disclosed_at as a last-resort fallback.
+    platform_submitted_at = data.get("submitted_at") or data.get("created_at") or data.get("disclosed_at")
+    platform_submitted_at = platform_submitted_at if isinstance(platform_submitted_at, str) else None
+
+    # Back-compat/general: for now treat submitted_at == platform_submitted_at.
+    submitted_at = platform_submitted_at
 
     # filter by vuln type
     if not looks_like_vuln((title + "\n" + (vuln_raw or "") + "\n" + body), vuln_type):
@@ -326,6 +412,7 @@ def fetch_hackerone(report_url: str, session: requests.Session, vuln_type: str) 
         title=title,
         vuln_type=vuln_type,
         vuln_type_raw=vuln_raw,
+        platform_submitted_at=platform_submitted_at,
         submitted_at=submitted_at,
         platform="hackerone",
         report_url=canonical_url(report_url),
@@ -345,28 +432,43 @@ def fetch_html_report(platform: str, report_url: str, session: requests.Session,
         return None
     html = r.text
 
-    # title
-    title = ""
-    m = re.search(r"<meta[^>]+property=\"og:title\"[^>]+content=\"([^\"]+)\"", html, flags=re.I)
-    if m:
-        title = m.group(1).strip()
+    jsonld = extract_jsonld_best_effort(html)
+
+    # title (prefer structured JSON-LD; fall back to meta/title)
+    title = (jsonld.get("title") or "").strip()
+    if not title:
+        m = re.search(r"<meta[^>]+property=\"og:title\"[^>]+content=\"([^\"]+)\"", html, flags=re.I)
+        if m:
+            title = m.group(1).strip()
     if not title:
         m = re.search(r"<title>(.*?)</title>", html, flags=re.I | re.S)
         if m:
             title = re.sub(r"\s+", " ", m.group(1)).strip()
 
-    te = TextExtractor()
-    te.feed(html)
-    text = te.get_text()
+    # body text (prefer structured JSON-LD; HTML-to-text fallback)
+    text = (jsonld.get("body") or "").strip()
+    if not text:
+        te = TextExtractor()
+        te.feed(html)
+        text = te.get_text()
 
     if not looks_like_vuln(title + "\n" + text, vuln_type):
         return None
 
-    # submitted time (best-effort from meta)
-    submitted_at = None
-    m = re.search(r"<meta[^>]+property=\"article:published_time\"[^>]+content=\"([^\"]+)\"", html, flags=re.I)
+    # platform submitted/published time (best-effort from meta)
+    platform_submitted_at = None
+    m = re.search(
+        r"<meta[^>]+property=['\"]article:published_time['\"][^>]+content=['\"]([^'\"]+)['\"]",
+        html,
+        flags=re.I,
+    )
     if m:
-        submitted_at = m.group(1).strip()
+        platform_submitted_at = m.group(1).strip()
+
+    if not platform_submitted_at:
+        platform_submitted_at = (jsonld.get("published_time") or "").strip() or None
+
+    submitted_at = platform_submitted_at
 
     payloads = extract_payloads(text)
     affected_urls = extract_urls(text)
@@ -380,6 +482,7 @@ def fetch_html_report(platform: str, report_url: str, session: requests.Session,
         title=title,
         vuln_type=vuln_type,
         vuln_type_raw=None,
+        platform_submitted_at=platform_submitted_at,
         submitted_at=submitted_at,
         platform=platform,
         report_url=canonical_url(report_url),
@@ -615,7 +718,8 @@ def generate_md(report: dict[str, Any]) -> str:
     title = report.get("title") or ""
     platform = report.get("platform") or ""
     vuln_type = report.get("vuln_type") or ""
-    submitted_at = report.get("submitted_at")
+    platform_submitted_at = report.get("platform_submitted_at") or report.get("submitted_at")
+    submitted_at = report.get("submitted_at") or platform_submitted_at
     report_url = report.get("report_url")
     target_site = report.get("target_site")
     body = report.get("report_body") or ""
@@ -657,7 +761,9 @@ JSON（请只使用这些信息）：
     lines.append("## 1. 概览")
     lines.append(f"- 平台: {platform}")
     lines.append(f"- 漏洞类型: {vuln_type}")
-    if submitted_at:
+    if platform_submitted_at:
+        lines.append(f"- 平台提交/发布时间: {platform_submitted_at}")
+    elif submitted_at:
         lines.append(f"- 提交/发布时间: {submitted_at}")
     if target_site:
         lines.append(f"- 目标站点(推断): {target_site}")
@@ -720,8 +826,8 @@ def write_report_files(nr: NormalizedReport) -> tuple[Path, Path]:
     json_name = f"{ts}_{nr.vuln_type}_{nr.platform}_{slug}.json"
     md_name = f"{ts}_{nr.vuln_type}_{nr.platform}_{slug}.md"
 
-    out_json = REPORTS_DIR / nr.platform / json_name
-    out_md = WRITEUPS_DIR / nr.platform / md_name
+    out_json = REPORTS_DIR / nr.vuln_type / json_name
+    out_md = EXPLANATIONS_DIR / nr.vuln_type / md_name
 
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_md.parent.mkdir(parents=True, exist_ok=True)
@@ -735,6 +841,34 @@ def write_report_files(nr: NormalizedReport) -> tuple[Path, Path]:
     return out_json, out_md
 
 
+def render_existing_reports() -> dict[str, Any]:
+    """Generate explanations from existing JSONs (no network)."""
+
+    paths = sorted(REPORTS_DIR.glob("**/*.json"))
+    rendered = 0
+    skipped = 0
+
+    for p in paths:
+        try:
+            obj = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            skipped += 1
+            continue
+        if obj.get("schema") != "bbreport.v1":
+            skipped += 1
+            continue
+
+        vt = (obj.get("vuln_type") or "unknown").strip().lower() or "unknown"
+        out_md = EXPLANATIONS_DIR / vt / (p.stem + ".md")
+        out_md.parent.mkdir(parents=True, exist_ok=True)
+
+        md = generate_md(obj)
+        out_md.write_text(md, encoding="utf-8")
+        rendered += 1
+
+    return {"total": len(paths), "rendered": rendered, "skipped": skipped}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--vuln", default="xss", help="vulnerability type (xss for now)")
@@ -742,7 +876,12 @@ def main() -> None:
     ap.add_argument("--max-urls", type=int, default=120)
     ap.add_argument("--hacktivity-pages", type=int, default=3)
     ap.add_argument("--sleep", type=float, default=0.6)
-    ap.add_argument("--no-ai", action="store_true", help="disable LLM even if keys are set")
+    ap.add_argument("--no-ai", action="store_true", help="disable AI and force rule-based explanations")
+    ap.add_argument(
+        "--render-existing",
+        action="store_true",
+        help="render Markdown explanations from existing reports/**/*.json (no crawling)",
+    )
     args = ap.parse_args()
 
     vuln_type = normalize_vuln_type(args.vuln)
@@ -756,7 +895,12 @@ def main() -> None:
         os.environ["BBREPORT_NO_AI"] = "1"
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    WRITEUPS_DIR.mkdir(parents=True, exist_ok=True)
+    EXPLANATIONS_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.render_existing:
+        result = render_existing_reports()
+        print(json.dumps({"mode": "render_existing", **result}, ensure_ascii=False))
+        return
 
     state = load_state()
     seen: dict[str, Any] = state.setdefault("seen", {})

@@ -20,5 +20,6 @@
       "XSScope & Intro: Advanced XSS payload generator to use for increasing impact"
     ],
     "affected_urls": []
-  }
+  },
+  "platform_submitted_at": null
 }

@@ -4,7 +4,7 @@
 - Reads existing `reports/**.json`
 - Fetches full body from the original report URL (public-only)
 - Rewrites JSON in-place using the normalized v1 schema
-- Generates/updates a matching Markdown writeup under `writeups/<platform>/` (AI if configured)
+- Generates/updates a matching Markdown explanation under `explanations/<vuln_type>/` (AI if configured)
 
 This is intentionally best-effort: if a URL is no longer reachable or lacks detail,
 we skip it and leave the original file unchanged.
@@ -24,7 +24,7 @@ import importlib.util
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "reports"
-WRITEUPS_DIR = ROOT / "writeups"
+EXPLANATIONS_DIR = ROOT / "explanations"
 
 
 def load_crawler_module():
@@ -90,7 +90,8 @@ def main() -> None:
         p.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
         # MD writeup path uses filename timestamp+slug; keep aligned with JSON filename
-        md_path = WRITEUPS_DIR / platform / p.name.replace(".json", ".md")
+        vt = (obj.get("vuln_type") or vuln or "unknown").strip().lower() or "unknown"
+        md_path = EXPLANATIONS_DIR / vt / p.name.replace(".json", ".md")
         md_path.parent.mkdir(parents=True, exist_ok=True)
         md = mod.generate_md(obj)
         md_path.write_text(md, encoding="utf-8")
