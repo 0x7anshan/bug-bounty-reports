@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qsl
 
 import requests
 
@@ -62,6 +62,25 @@ def canonical_url(url: str) -> str:
 
 def safe_slug_from_url(url: str) -> str:
     return sha1(url)[:10]
+
+
+def is_intigriti_bug_bytes(url: str, title: str) -> bool:
+    """Intigriti 'Bug Bytes' is newsletter-style content (high noise for this repo).
+
+    User requirement: do not ingest Bug Bytes even if it mentions XSS.
+    """
+
+    u = (url or "").lower()
+    t = (title or "").lower()
+
+    if "bug bytes" in t:
+        return True
+
+    # Common slug pattern on Intigriti.
+    if "/bug-bytes" in u or "bug-bytes" in u:
+        return True
+
+    return False
 
 
 class TextExtractor(HTMLParser):
@@ -455,6 +474,10 @@ def fetch_html_report(platform: str, report_url: str, session: requests.Session,
     if not looks_like_vuln(title + "\n" + text, vuln_type):
         return None
 
+    # Intigriti 'Bug Bytes' is newsletter-style content (noise). Do not ingest.
+    if platform == "intigriti" and is_intigriti_bug_bytes(report_url, title):
+        return None
+
     # platform submitted/published time (best-effort from meta)
     platform_submitted_at = None
     m = re.search(
@@ -567,7 +590,8 @@ def discover_urls(session: requests.Session, platforms: list[str], *, max_urls: 
             discover_sitemap(
                 session,
                 "https://www.intigriti.com/sitemap.xml",
-                url_filter=re.compile(r"/researchers/blog/"),
+                # Exclude 'bug-bytes' newsletter posts (noise)
+                url_filter=re.compile(r"/researchers/blog/(?!bug-bytes)", re.I),
                 max_urls=max_urls,
             )
         )
@@ -734,68 +758,45 @@ def generate_md(report: dict[str, Any]) -> str:
             report_for_llm["report_body"] = rb[:8000] + "\n…(truncated)…"
 
         prompt = f"""
-请基于下面的公开漏洞报告 JSON 内容，生成一份让我能看懂的中文 Markdown。
-要求：
-- 必须说明：漏洞如何产生、如何发现/复现、关键输入点/输出点、payload（如有）、影响
-- 尽量从正文中抽取：受影响 URL/参数/端点/位置
-- 如果正文不足以判断，明确写“信息不足”，但不要编造
-- 结构固定：
-  1. 概览
-  2. 目标/受影响范围
-  3. 漏洞成因（根因）
-  4. 复现步骤
-  5. Payload / PoC
-  6. 影响与风险
-  7. 修复建议
-  8. 原文引用（摘录关键段落）
+请基于下面的公开漏洞报告 JSON 内容，生成一份极简中文 Markdown，总结出两件事即可：
+1) 该漏洞的触发 URL（尽量具体到路径+参数；如果有多个，列出 top 5）
+2) 利用方法（复现步骤 + 关键 payload/PoC；如果信息不足要写“信息不足”，不要编造）
+
+输出结构固定：
+- 标题
+- 触发 URL
+- 利用方法
 
 JSON（请只使用这些信息）：
 {json.dumps(report_for_llm, ensure_ascii=False)}
 """.strip()
         return llm_chat(prompt)
 
-    # Rule-based fallback
+    # Rule-based fallback (extremely concise per user requirement)
     lines: list[str] = []
     lines.append(f"# {title}".strip())
-    lines.append("")
-    lines.append("## 1. 概览")
-    lines.append(f"- 平台: {platform}")
-    lines.append(f"- 漏洞类型: {vuln_type}")
-    if platform_submitted_at:
-        lines.append(f"- 平台提交/发布时间: {platform_submitted_at}")
-    elif submitted_at:
-        lines.append(f"- 提交/发布时间: {submitted_at}")
-    if target_site:
-        lines.append(f"- 目标站点(推断): {target_site}")
+
     if report_url:
-        lines.append(f"- 报告地址: {report_url}")
+        lines.append("")
+        lines.append(f"报告地址: {report_url}")
 
     lines.append("")
-    lines.append("## 2. 目标/受影响范围")
+    lines.append("## 触发 URL")
     if affected_urls:
-        for u in affected_urls[:10]:
+        for u in affected_urls[:5]:
             lines.append(f"- {u}")
     else:
         lines.append("- 信息不足")
 
     lines.append("")
-    lines.append("## 3. 复现步骤")
-    lines.append("- （AI 未配置，当前仅做规则化摘录）")
-
-    lines.append("")
-    lines.append("## 4. Payload / PoC")
+    lines.append("## 利用方法")
     if payloads:
-        for p in payloads[:10]:
-            lines.append(f"- {p}")
+        # Keep it actionable but minimal.
+        lines.append("- 将下列 payload 注入到触发 URL 对应的输入点（常见为 query 参数/路径片段/表单字段），观察是否执行：")
+        for p in payloads[:8]:
+            lines.append(f"  - {p}")
     else:
         lines.append("- 信息不足")
-
-    lines.append("")
-    lines.append("## 5. 原文关键摘录")
-    excerpt = body.strip()
-    if len(excerpt) > 1200:
-        excerpt = excerpt[:1200] + "…"
-    lines.append("```\n" + excerpt + "\n```")
 
     return "\n".join(lines) + "\n"
 
@@ -820,7 +821,8 @@ def save_state(state: dict[str, Any]) -> None:
 
 
 def write_report_files(nr: NormalizedReport) -> tuple[Path, Path]:
-    ts = datetime.now(timezone.utc).astimezone().strftime("%Y%m%d_%H%M%S")
+    # User requirement: filename timestamp should keep only YYYYMMDD (no HHMMSS)
+    ts = datetime.now(timezone.utc).astimezone().strftime("%Y%m%d")
     slug = safe_slug_from_url(nr.report_url)
 
     json_name = f"{ts}_{nr.vuln_type}_{nr.platform}_{slug}.json"

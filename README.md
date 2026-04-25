@@ -10,8 +10,8 @@ Automated collection of public bug bounty disclosures/writeups.
 
 ## Naming
 Each new report is saved as:
-- `reports/<vuln_type>/YYYYMMDD_HHMMSS_<vuln_type>_<platform>_<slug>.json`
-- `explanations/<vuln_type>/YYYYMMDD_HHMMSS_<vuln_type>_<platform>_<slug>.md`
+- `reports/<vuln_type>/YYYYMMDD_<vuln_type>_<platform>_<slug>.json`
+- `explanations/<vuln_type>/YYYYMMDD_<vuln_type>_<platform>_<slug>.md`
 
 ## Platforms (current)
 - HackerOne (public disclosed reports via `/reports/<id>.json`)
