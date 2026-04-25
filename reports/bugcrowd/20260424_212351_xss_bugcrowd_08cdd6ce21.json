@@ -1,34 +1,24 @@
 {
-  "platform": "bugcrowd",
-  "vuln": "xss",
-  "url": "https://bugcrowd.com/disclosures/655092e1-8200-4089-a42f-3803edfdeadd/reflected-xss-via-url-path-in-archive-endpoint",
+  "schema": "bbreport.v1",
   "title": "Reflected XSS via URL Path in /archive/ Endpoint - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": null,
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/655092e1-8200-4089-a42f-3803edfdeadd/reflected-xss-via-url-path-in-archive-endpoint",
+  "target_site": "seabass.gsfc.nasa.gov",
+  "report_body": "Reflected XSS via URL Path in /archive/ Endpoint - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nReflected XSS via URL Path in /archive/ Endpoint\n\nReflected XSS via URL Path in /archive/ Endpoint\n\nDisclosed by\n\npwntest\n\nEngagement\n\nNational Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nDisclosed date\n\n5 Jun 2025\n11 months ago\n\nPriority\n\nP3\n\nBugcrowd's VRT priority rating\n\nStatus\n\nResolved\n\nThis vulnerability has been accepted and fixed\n\nSummary by National Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nResolved\n\nSummary by pwntest\n\nThere was a Reflected Cross-Site Scripting (XSS) vulnerability on the following subdomain:\n\nseabass.gsfc.nasa.gov\n\nAny content appended after /archive/ was reflected back into the page without proper sanitization.\n\nFor example, visiting a URL like:\n\nhttps://seabass.gsfc.nasa.gov/archive/<Img src=1 onerror=alert()>\n\nwould cause the injected HTML to appear on the page, leading to JavaScript execution.\n\nHowever, due to a strict CSP, JavaScript execution was blocked in the browser.\n\nThis happened because user input was directly reflected into the DOM without proper escaping or encoding on the client side.\n\nActivity\n\npwntest\n\nAll-time points\n\n0\n\nAccuracy\n\n100.0%\n\nCurrent rank\n\nN/A\n\nPriority percentile",
   "discovered_at": "2026-04-24T13:23:51.718519+00:00",
-  "how_to_find": [
-    "Reflected XSS via URL Path in /archive/ Endpoint - CrowdStream - Bugcrowd"
-  ],
-  "payloads_or_poc": [
-    "https://seabass.gsfc.nasa.gov/archive/<Img src=1 onerror=alert()>"
-  ],
   "source": {
-    "fetched_at": "2026-04-24T13:23:51.718536+00:00",
+    "fetched_at": "2026-04-24T14:18:53.225313+00:00",
     "http_status": 200
   },
-  "triage": {
-    "ignored": false,
-    "value_score": 80,
-    "reasons": [
-      "bugcrowd_disclosure",
-      "has_payloads",
-      "some_howto"
-    ]
-  },
-  "summary": {
-    "vuln_point": "Reflected XSS: attacker-controlled input is reflected in the response without correct encoding.",
-    "poc": [
+  "extracted": {
+    "payloads": [
       "https://seabass.gsfc.nasa.gov/archive/<Img src=1 onerror=alert()>"
     ],
-    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
-    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
+    "affected_urls": [
+      "https://seabass.gsfc.nasa.gov/archive/<Img"
+    ]
   }
 }

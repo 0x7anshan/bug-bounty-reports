@@ -1,38 +1,26 @@
 {
-  "platform": "yeswehack",
-  "vuln": "xss",
-  "url": "https://www.yeswehack.com/community/catch-the-flag-catch-the-gold",
+  "schema": "bbreport.v1",
   "title": "Capture The Flag Challenge Organized by Alibaba Security and Lazada | YesWeHack Community",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": "2019-06-11T08:57:00.000Z",
+  "platform": "yeswehack",
+  "report_url": "https://www.yeswehack.com/community/catch-the-flag-catch-the-gold",
+  "target_site": "security.alibaba.com",
+  "report_body": "Capture The Flag Challenge Organized by Alibaba Security and Lazada | YesWeHack Community ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog\n\nCommunity\n\nCatch the flag, catch the (rea...\n\nCatch the flag, catch the (real!) gold\nJune 11, 2019\n\nDid you ever have the chance to win a pure gold medal ?\nTHIS IS HAPPENING : Join us next week, on the 18th of June, at the Alibaba Security Meetup-hacker Community Event organized by Alibaba Security and Lazada in partnership with YesWeHack.\n\nHighlights of the evening\nHacking game\n1h to solve\n\n3 levels\n\nAll of them are real vulnerability from bug bounty\n? Pure gold medal for Top 1 ?\n\n@BitK_ will gives the solution and shares tips and tricks about how to find a vulnerability.\n\nPick a lock game\nNine different locks and tools\n\nLearn about the vulnerabilities of lock and locking devices\n\nTry to pick a lock by yourself.\n\nNew bug bounty\nASRC private bug bounty program\n\nASRC Vulnerability Rewards Program\n\nOther\nDinner & Beer\n\nBreak ice and Gather stamps Game\n\nAgenda\n17:30-18:00 Sign in\n\n18:00-18:30 Ice breaking game & Dinner & networking\n\n18:30-19:40 Hacking game & Pick a lock game\n\n19:40-19:50 Bug Bounty Announce\n\n19:50-20:00 Award ceremony for hacking game\n\n20:00-20:30 One session\n\n20:30-21:00 Gives the solution to the hacking game and shares tips and tricks about how to find a vulnerability\n\nHacking game\nDescription\nDo you think XSS is “low hanging fruit” ?\nSo just exploit it on the website provided during the event and call alert(document.domain).\n\nThere are 3 levels of increasing difficulty each one is worth 100pts, and they are real XSS discovered on bug bounty…\nFor each step submit your payload to @yeswehack\n\nAll your payloads will be tested on a default installation of Chrome 75\nAt the end of the timer, the one with the most points will be declared the winner.\n\nIf two players have the same score, the first one to reach the score will be declared the winner.\n\nRules\nThis is an XSS challenge, no need to brute force or automated tools.\nThis is NOT a cryptography challenge.\nYour solution for each step will be a single link.\nJust bring your laptop and chrome75 installed\n\nAbout the event\nAlibaba Security Meetup is a security event hosted by Lazada and ASRC.\nThe goal of these meet-ups is to build a strong “security community” within the South East Asia.\nBy becoming a member of such a community, you will get to:\n\nLearn about the new trends within the Information Security domain.\n\nParticipate in the CTF and win prizes.\n\nLearn more about the ASRC bug bounty platform.\n\nCollect swags and relish food and drinks while networking with your peers in the domain of information security.\nThe goal of these meet-ups is to build a strong “security community” within the South East Asia. By becoming a member of such a community, you will get to\n\nFor more details about ASRC Vulnerability Rewards Program, please visit:\nhttps://security.alibaba.com/online\n\nSee you next week Singapore!\n\nFooterGartner Peer InsightsClick to load reviews\nProducts\nBug Bounty\n\nContinuous Pentesting \n\nAutonomous Pentest\n\nVulnerability Disclosure Policy\n\nPentest Management\n\nOur AI Approach\n\nLive Hacking Events \n\nResearchers \nStart Hunting\n\nPublic Programs\n\nTools\n\nRanking\n\nDojo\n\nTraining modules\n\nVulnerable Code Snippets\n\nResources\nBlog\n\nCase Studies\n\nVideos\n\nHelp Center\n\nAPI\n\nGithub\n\nNewsletter\n\nCompany\nAbout YesWeHack\n\nTrust & Security\n\nCareer\n\nPress\n\nEvents\n\nContact\n\nFollow us\n©2026 YESWEHACK\n\nLegal Notices\n\nPrivacy Policy\n\nCookies Policy\nChange Cookie Preferences",
   "discovered_at": "2026-04-24T13:35:22.027971+00:00",
-  "how_to_find": [
-    "Capture The Flag Challenge Organized by Alibaba Security and Lazada | YesWeHack Community ProductsResearchersResourcesAbout usBlogLoginContact UsChange language\nEN\nChange languageOpen main menu\nBlog"
-  ],
-  "payloads_or_poc": [
-    "So just exploit it on the website provided during the event and call alert(document.domain).",
-    "For each step submit your payload to @yeswehack",
-    "All your payloads will be tested on a default installation of Chrome 75"
-  ],
   "source": {
-    "fetched_at": "2026-04-24T13:35:22.027987+00:00",
+    "fetched_at": "2026-04-24T14:18:59.265365+00:00",
     "http_status": 200
   },
-  "triage": {
-    "ignored": true,
-    "value_score": 35,
-    "reasons": [
-      "yeswehack_community",
-      "has_payloads",
-      "some_howto",
-      "looks_like_general_content"
-    ]
-  },
-  "summary": {
-    "vuln_point": "Low-value item for bug-bounty tracking (likely a general article/roundup or lacks concrete repro details).",
-    "poc": [
+  "extracted": {
+    "payloads": [
       "So just exploit it on the website provided during the event and call alert(document.domain).",
       "For each step submit your payload to @yeswehack",
       "All your payloads will be tested on a default installation of Chrome 75"
     ],
-    "notes": "Marked ignored by heuristic triage; consider re-enriching with full text later if needed."
+    "affected_urls": [
+      "https://security.alibaba.com/online"
+    ]
   }
 }

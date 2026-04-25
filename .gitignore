@@ -4,6 +4,7 @@
 
 # Runtime state (keep local)
 state/xss_state.json
+state/crawler_state.json
 
 # Python
 __pycache__/

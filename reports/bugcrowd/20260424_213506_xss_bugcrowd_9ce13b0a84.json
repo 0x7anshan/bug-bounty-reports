@@ -1,34 +1,25 @@
 {
-  "platform": "bugcrowd",
-  "vuln": "xss",
-  "url": "https://bugcrowd.com/disclosures/63a1d77c-df3b-4a1a-95fe-d5aa474fb9b7/reflected-cross-site-scripting-in-login-page",
+  "schema": "bbreport.v1",
   "title": "Reflected cross site scripting in login page - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": null,
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/63a1d77c-df3b-4a1a-95fe-d5aa474fb9b7/reflected-cross-site-scripting-in-login-page",
+  "target_site": "accountsstage.yoyogames.com",
+  "report_body": "Reflected cross site scripting in login page - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nReflected cross site scripting in login page\n\nReflected cross site scripting in login page\n\nDisclosed by\n\nKD\n\nEngagement\n\nOpera Public Bug Bounty\n\nDisclosed date\n\n20 Aug 2021\nover 4 years ago\n\nPoints\n\n10\n\nPriority\n\nP3\n\nBugcrowd's VRT priority rating\n\nStatus\n\nInformational\n\nThis vulnerability is seen as an accepted business risk\n\nSummary by KD\n\nOne of Opera's endpoint that is vulnerable to an injection vulnerability - namely a reflected injection of JavaScript, also known as Reflected Cross-Site Scripting (XSS). As per OWASP's definition: \"Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. \"\n\nThis happens because When we log in. There is a parameter (path which is vulnerable to cross-site scripting and Open redirect) that does not properly sanitize/escape user input, allowing injection to occur.\n\nReport details\n\nSubmitted\n\n09 Jun 2021 13:44:56 UTC\n\nTarget Location\n\n*.yoyogames.com\n\nTarget category\n\nAPI Testing\n\nVRT\n\nCross-Site Scripting (XSS) > Reflected > Non-Self\n\nPriority\n\nP3\n\nBug\nURL\n\nhttps://accountsstage.yoyogames.com/login\n\nDescription\n\nHello,\n\nI found that the application is vulnerable to cross-site scripting (XSS). XSS is a type of attack that involves running a malicious scripts on a victim’s browser.\n\nSteps:\n\n1) Send this link to any user https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27) \n\n2) Now when the user will open his account an xss alert will pop up\n\nImpact:\n\nWe can see it is vulnerable to xss. Once exploited It is possible to steal or manipulate a legitimate user’s session credentials including session cookies.\n\nThanks,\n\nKD :)\n\nActivity",
   "discovered_at": "2026-04-24T13:35:06.989987+00:00",
-  "how_to_find": [
-    "Reflected cross site scripting in login page - CrowdStream - Bugcrowd"
-  ],
-  "payloads_or_poc": [
-    "1) Send this link to any user https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27)"
-  ],
   "source": {
-    "fetched_at": "2026-04-24T13:35:06.990000+00:00",
+    "fetched_at": "2026-04-24T14:18:56.059344+00:00",
     "http_status": 200
   },
-  "triage": {
-    "ignored": false,
-    "value_score": 80,
-    "reasons": [
-      "bugcrowd_disclosure",
-      "has_payloads",
-      "some_howto"
-    ]
-  },
-  "summary": {
-    "vuln_point": "XSS: user-controlled data reaches an executable context in the browser due to missing/incorrect output encoding or sanitization.",
-    "poc": [
+  "extracted": {
+    "payloads": [
       "1) Send this link to any user https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27)"
     ],
-    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
-    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
+    "affected_urls": [
+      "https://accountsstage.yoyogames.com/login",
+      "https://accountsstage.yoyogames.com/login?path=javascript:alert(%27KD%27"
+    ]
   }
 }

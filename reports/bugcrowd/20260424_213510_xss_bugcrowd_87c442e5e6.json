@@ -1,38 +1,30 @@
 {
-  "platform": "bugcrowd",
-  "vuln": "xss",
-  "url": "https://bugcrowd.com/disclosures/1357c3ce-cc7e-4ce9-b53b-a943deabccbe/application-is-vulnerable-to-stored-xss",
+  "schema": "bbreport.v1",
   "title": "Application is vulnerable to stored XSS - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": null,
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/1357c3ce-cc7e-4ce9-b53b-a943deabccbe/application-is-vulnerable-to-stored-xss",
+  "target_site": "jokery.statuspage.io",
+  "report_body": "Application is vulnerable to stored XSS - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nApplication is vulnerable to stored XSS\n\nApplication is vulnerable to stored XSS\n\nDisclosed by\n\nPuneetLucknowi\n\nEngagement\n\nStatuspage\n\nDisclosed date\n\n5 Oct 2023\nover 2 years ago\n\nPoints\n\n5\n\nPriority\n\nP5\n\nBugcrowd's VRT priority rating\n\nStatus\n\nInformational\n\nThis vulnerability is seen as an accepted business risk\n\nSummary by Statuspage\n\nStored XSS Vulnerability in Statuspage\n\nSummary by PuneetLucknowi\n\nPlease share full details it would be helpful for development team to understand the issue.\n\nReport details\n\nSubmitted\n\n23 Mar 2022 06:20:43 UTC\n\nTarget Location\n\n*.statuspage.io\n\nTarget category\n\nWeb App\n\nVRT\n\nCross-Site Scripting (XSS) > Stored\n\nPriority\n\nP5\n\nBug\nURL\n\nhttps://jokery.statuspage.io/incidents/r033ggcvdnvt?utm_source=manage\n\nDescription\n\nTitle:\n\nApplication is vulnerable to stored XSS .\n\nVulnerability reproduction steps\n\nUser can create web application & utilize HTML embedding to create site, however with html which is acceptable but eval() JavaScript dangerous functions also allowed as input. \n\nAn attacker could create some site application with injected malicious eval() function & utilize beef exploitation kind of tool to run malicious JavaScript payload into victim's browser & can craft various exploitation.\n\nCreating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & in that way on viewing the page in which JavaScript malicious reference included through JavaScript eval() could serve malicious payload to victim & successfully craft various XSS based attack through BEEF exploitation framework tool detailed example with Beef Framework exploitation referenced below :\n\nhttps://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting\n\nhttps://zsecurity.org/how-to-use-beef-framework-over-wan/\n\nhttps://www.kali.org/tools/beef-xss/\n\nSo advertising a single page could lead to exploitation of multiple users/victims.\n\nRemediation:\n\nPlease refer below link for remediation:\n\nhttps://portswigger.net/web-security/cross-site-scripting/preventing\n\nSteps:\n\nInjected XSS script eval() function returned in response:\n\nxss payload executed & various data captured in xsshunter framework cookie, ip address of victim etc.\n\nRecommendation: It is recommended to block execuition of eval() dangerous functions also.\n\nActivity\n\nPuneetLucknowi\n\nAll-time points\n\n876\n\nAccuracy\n\n95.1%\n\nCurrent rank\n\n688th\n\nPriority percentile",
   "discovered_at": "2026-04-24T13:35:10.767960+00:00",
-  "how_to_find": [
-    "Application is vulnerable to stored XSS - CrowdStream - Bugcrowd"
-  ],
-  "payloads_or_poc": [
-    "An attacker could create some site application with injected malicious eval() function & utilize beef exploitation kind of tool to run malicious JavaScript payload into victim's browser & can craft various exploitation.",
-    "Creating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & …",
-    "xss payload executed & various data captured in xsshunter framework cookie, ip address of victim etc."
-  ],
   "source": {
-    "fetched_at": "2026-04-24T13:35:10.767972+00:00",
+    "fetched_at": "2026-04-24T14:18:57.970310+00:00",
     "http_status": 200
   },
-  "triage": {
-    "ignored": false,
-    "value_score": 80,
-    "reasons": [
-      "bugcrowd_disclosure",
-      "has_payloads",
-      "some_howto"
-    ]
-  },
-  "summary": {
-    "vuln_point": "Stored XSS: attacker-controlled input is persisted and later rendered to other users without proper output encoding.",
-    "poc": [
+  "extracted": {
+    "payloads": [
       "An attacker could create some site application with injected malicious eval() function & utilize beef exploitation kind of tool to run malicious JavaScript payload into victim's browser & can craft various exploitation.",
-      "Creating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & …",
+      "Creating a single page with JavaScript eval() function to include malicious JavaScript such as hook.js & advertise the page as this page reflects primary domain/FQDN as *.statuspage.io so victim easily trust this page & in that way on viewing the page in which JavaScript malicious reference included through JavaScript eval() could serve malicious payload to victim & successfully craft various XSS …",
       "xss payload executed & various data captured in xsshunter framework cookie, ip address of victim etc."
     ],
-    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
-    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
+    "affected_urls": [
+      "https://jokery.statuspage.io/incidents/r033ggcvdnvt?utm_source=manage",
+      "https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting",
+      "https://zsecurity.org/how-to-use-beef-framework-over-wan/",
+      "https://www.kali.org/tools/beef-xss/",
+      "https://portswigger.net/web-security/cross-site-scripting/preventing"
+    ]
   }
 }

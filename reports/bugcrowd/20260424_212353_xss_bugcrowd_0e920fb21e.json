@@ -1,36 +1,25 @@
 {
-  "platform": "bugcrowd",
-  "vuln": "xss",
-  "url": "https://bugcrowd.com/disclosures/d79469cf-e190-4fcb-8fd3-c0fda8f1eaa1/dom-based-cross-site-scripting-xss",
+  "schema": "bbreport.v1",
   "title": "DOM Based Cross Site Scripting (XSS) - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": null,
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/d79469cf-e190-4fcb-8fd3-c0fda8f1eaa1/dom-based-cross-site-scripting-xss",
+  "target_site": "www.globe.gov",
+  "report_body": "DOM Based Cross Site Scripting (XSS) - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nDOM Based Cross Site Scripting (XSS)\n\nDOM Based Cross Site Scripting (XSS)\n\nDisclosed by\n\ndkcyberz\n\nEngagement\n\nNational Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nDisclosed date\n\n5 Nov 2024\nover 1 year ago\n\nPriority\n\nP5\n\nBugcrowd's VRT priority rating\n\nStatus\n\nInformational\n\nThis vulnerability is seen as an accepted business risk\n\nSummary by National Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nUnable to reproduce as reported \n\nSummary by dkcyberz\n\nThis summary outlines the discovery and mitigation of DOM-Based Cross-Site Scripting (XSS) vulnerabilities within the NASA web application. \n\nDOM-Based Cross-Site Scripting\n\nDOM-Based XSS is a type of web security vulnerability that exploits the Document Object Model (DOM) of a web page to inject and execute malicious JavaScript code in the victim's browser. Unlike other XSS vulnerabilities, the malicious payload isn't stored on the server, but rather manipulated on the client-side (browser) through JavaScript.\n\nBusiness Impact\n\nStealing cookies and session tokens: Attackers can steal the victim's login credentials, hijack their sessions, and access their accounts.\n\nModifying web pages:Attackers can alter the content of the page to display misleading information or redirect the user to malicious sites.\n\nLaunching further attacks: Attackers can use the stolen information or compromised session to launch further attacks like phishing or malware distribution.\n\nSteps to Reproduce\n\nOpen the URL in your browser (https://www.globe.gov/globe-data/science-honor-roll/honor-roll-recognition)\n\nClick on 'Open Advanced Filter' option.\n\nEnter the payload in the 'School' field: <script>alert('XSS')</script>.\n\nYou will now receive a pop-up alert.\n\nActivity\n\ndkcyberz\n\nAll-time points\n\n9\n\nAccuracy\n\n92.3%\n\nCurrent rank\n\nN/A\n\nPriority percentile",
   "discovered_at": "2026-04-24T13:23:53.054463+00:00",
-  "how_to_find": [
-    "DOM Based Cross Site Scripting (XSS) - CrowdStream - Bugcrowd"
-  ],
-  "payloads_or_poc": [
-    "DOM-Based XSS is a type of web security vulnerability that exploits the Document Object Model (DOM) of a web page to inject and execute malicious JavaScript code in the victim's browser. Unlike other XSS vulnerabilities,…",
-    "Enter the payload in the 'School' field: <script>alert('XSS')</script>."
-  ],
   "source": {
-    "fetched_at": "2026-04-24T13:23:53.054486+00:00",
+    "fetched_at": "2026-04-24T14:18:53.995461+00:00",
     "http_status": 200
   },
-  "triage": {
-    "ignored": false,
-    "value_score": 80,
-    "reasons": [
-      "bugcrowd_disclosure",
-      "has_payloads",
-      "some_howto"
-    ]
-  },
-  "summary": {
-    "vuln_point": "DOM-based XSS: client-side data reaches a dangerous sink (e.g., innerHTML) without sanitization.",
-    "poc": [
-      "DOM-Based XSS is a type of web security vulnerability that exploits the Document Object Model (DOM) of a web page to inject and execute malicious JavaScript code in the victim's browser. Unlike other XSS vulnerabilities,…",
+  "extracted": {
+    "payloads": [
+      "DOM-Based XSS is a type of web security vulnerability that exploits the Document Object Model (DOM) of a web page to inject and execute malicious JavaScript code in the victim's browser. Unlike other XSS vulnerabilities, the malicious payload isn't stored on the server, but rather manipulated on the client-side (browser) through JavaScript.",
       "Enter the payload in the 'School' field: <script>alert('XSS')</script>."
     ],
-    "impact": "Arbitrary JavaScript execution in victim browsers; can lead to account takeover actions depending on context.",
-    "notes": "Auto-summary based on stored fields (title/how_to_find/payloads)."
+    "affected_urls": [
+      "https://www.globe.gov/globe-data/science-honor-roll/honor-roll-recognition"
+    ]
   }
 }
