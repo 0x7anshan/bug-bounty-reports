@@ -478,34 +478,115 @@ def discover_urls(session: requests.Session, platforms: list[str], *, max_urls: 
 
 
 # ------------------------
-# MD writeup generation (AI if configured)
+# MD writeup generation (AI via Hermes Agent config by default)
 # ------------------------
 
+_HERMES_MODEL_CACHE: dict[str, str] | None = None
+
+
+def _strip_quotes(s: str) -> str:
+    s = s.strip()
+    if (s.startswith("\"") and s.endswith("\"")) or (s.startswith("'") and s.endswith("'")):
+        return s[1:-1]
+    return s
+
+
+def _hermes_home() -> Path:
+    # Prefer explicit HERMES_HOME so profiles work; fall back to ~/.hermes
+    hh = os.getenv("HERMES_HOME")
+    if hh:
+        return Path(hh)
+    return Path.home() / ".hermes"
+
+
+def _load_hermes_model_config() -> dict[str, str]:
+    """Best-effort parse of ~/.hermes/config.yaml.
+
+    We intentionally avoid adding PyYAML as a dependency for this repo.
+    We only need a few keys under `model:`.
+    """
+
+    global _HERMES_MODEL_CACHE
+    if _HERMES_MODEL_CACHE is not None:
+        return _HERMES_MODEL_CACHE
+
+    out: dict[str, str] = {}
+    p = _hermes_home() / "config.yaml"
+    if not p.exists():
+        _HERMES_MODEL_CACHE = {}
+        return {}
+
+    current = None
+    try:
+        for raw in p.read_text(encoding="utf-8").splitlines():
+            line = raw.rstrip("\n")
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            if re.match(r"^[A-Za-z0-9_]+:\s*$", line):
+                current = line.split(":", 1)[0].strip()
+                continue
+            if current != "model":
+                continue
+            m = re.match(r"^\s{2}([A-Za-z0-9_]+):\s*(.*)$", line)
+            if not m:
+                continue
+            k = m.group(1)
+            v = _strip_quotes(m.group(2))
+            out[k] = v
+    except Exception:
+        out = {}
+
+    _HERMES_MODEL_CACHE = out
+    return out
+
+
 def llm_enabled() -> bool:
-    return bool(os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY"))
+    # User override
+    if os.getenv("BBREPORT_NO_AI") == "1":
+        return False
+
+    # Explicit API env vars (optional)
+    if os.getenv("OPENAI_API_KEY"):
+        return True
+
+    # Default: reuse Hermes Agent config (~/.hermes/config.yaml)
+    cfg = _load_hermes_model_config()
+    return bool(cfg.get("api_key") and cfg.get("base_url") and cfg.get("default"))
 
 
 def llm_chat(prompt: str) -> str:
     """OpenAI-compatible chat call.
 
-    Supports:
-    - OPENAI_API_KEY + OPENAI_BASE_URL (optional)
-    - OPENROUTER_API_KEY (uses OpenRouter endpoint)
+    This repo does NOT require per-project API configuration.
 
-    Model:
-    - LLM_MODEL (required when AI enabled; no default to avoid surprises)
+    Priority order:
+    1) If OPENAI_API_KEY is set: use OPENAI_BASE_URL (default: api.openai.com)
+    2) Else: use Hermes Agent config (~/.hermes/config.yaml): model.default + model.base_url + model.api_key
+
+    Optional override:
+    - LLM_MODEL: force a specific model name
     """
 
     model = os.getenv("LLM_MODEL")
-    if not model:
-        raise RuntimeError("LLM_MODEL is required when AI is enabled")
 
     if os.getenv("OPENAI_API_KEY"):
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("OPENAI_API_KEY") or ""
         base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+        if not model:
+            # fall back to Hermes default model if present
+            cfg = _load_hermes_model_config()
+            model = cfg.get("default")
     else:
-        api_key = os.getenv("OPENROUTER_API_KEY")
-        base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+        cfg = _load_hermes_model_config()
+        api_key = cfg.get("api_key", "")
+        base_url = cfg.get("base_url", "")
+        if not model:
+            model = cfg.get("default")
+
+    if not (api_key and base_url and model):
+        raise RuntimeError(
+            "LLM is not configured. Expected either OPENAI_API_KEY or Hermes Agent config at $HERMES_HOME/config.yaml with model.default/base_url/api_key."
+        )
 
     url = base_url.rstrip("/") + "/chat/completions"
     headers = {
@@ -525,7 +606,7 @@ def llm_chat(prompt: str) -> str:
     r = requests.post(url, headers=headers, data=json.dumps(payload), timeout=60)
     r.raise_for_status()
     data = r.json()
-    return (data["choices"][0]["message"]["content"] or "").strip()
+    return (data.get("choices", [{}])[0].get("message", {}).get("content") or "").strip()
 
 
 def generate_md(report: dict[str, Any]) -> str:
@@ -542,6 +623,12 @@ def generate_md(report: dict[str, Any]) -> str:
     affected_urls = (report.get("extracted") or {}).get("affected_urls") or []
 
     if llm_enabled():
+        # Avoid pathological prompt sizes. Keep enough context for a useful writeup.
+        report_for_llm = dict(report)
+        rb = (report_for_llm.get("report_body") or "")
+        if isinstance(rb, str) and len(rb) > 8000:
+            report_for_llm["report_body"] = rb[:8000] + "\n…(truncated)…"
+
         prompt = f"""
 请基于下面的公开漏洞报告 JSON 内容，生成一份让我能看懂的中文 Markdown。
 要求：
@@ -559,7 +646,7 @@ def generate_md(report: dict[str, Any]) -> str:
   8. 原文引用（摘录关键段落）
 
 JSON（请只使用这些信息）：
-{json.dumps(report, ensure_ascii=False)}
+{json.dumps(report_for_llm, ensure_ascii=False)}
 """.strip()
         return llm_chat(prompt)
 
@@ -665,8 +752,8 @@ def main() -> None:
     session.headers.update({"User-Agent": os.getenv("CRAWLER_UA", DEFAULT_UA)})
 
     if args.no_ai:
-        os.environ.pop("OPENAI_API_KEY", None)
-        os.environ.pop("OPENROUTER_API_KEY", None)
+        # Hard disable AI regardless of Hermes/OpenAI env/config.
+        os.environ["BBREPORT_NO_AI"] = "1"
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     WRITEUPS_DIR.mkdir(parents=True, exist_ok=True)

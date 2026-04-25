@@ -4,8 +4,7 @@ Automated collection of public bug bounty disclosures/writeups.
 
 ## What this repo contains
 - `reports/` — per-report JSON files (timestamped)
-- `writeups/` — per-report Markdown writeups generated from JSON (AI if configured)
-- `cards/` — PNG summary cards (legacy; optional)
+- `writeups/` — per-report Markdown writeups generated from JSON (AI via Hermes Agent config by default; can disable with `--no-ai`)
 - `state/` — local crawler state (seen URLs/IDs) for incremental runs (NOT committed)
 - `scripts/` — crawler + extractors
 
@@ -13,9 +12,6 @@ Automated collection of public bug bounty disclosures/writeups.
 Each new report is saved as:
 - `reports/<platform>/YYYYMMDD_HHMMSS_<vuln_type>_<platform>_<slug>.json`
 - `writeups/<platform>/YYYYMMDD_HHMMSS_<vuln_type>_<platform>_<slug>.md`
-
-Cards (legacy/optional):
-- `cards/<platform>/YYYYMMDD_HHMMSS_<vuln_type>_<platform>_<slug>.png`
 
 ## Platforms (current)
 - HackerOne (public disclosed reports via `/reports/<id>.json`)
@@ -31,12 +27,12 @@ Discovery is *not* limited to search engines:
 - Bugcrowd: sitemap.xml
 - Intigriti: sitemap.xml (filtered to researchers blog)
 
-## AI writeups (optional but recommended)
-If you want AI-generated markdown explanations, set env vars when running:
-- `OPENROUTER_API_KEY` (or `OPENAI_API_KEY`)
-- `LLM_MODEL` (OpenAI-compatible model id)
+## AI writeups
+By default, `scripts/crawl_reports.py` reuses the Hermes Agent model config from:
+- `$HERMES_HOME/config.yaml` (or `~/.hermes/config.yaml`)
 
-If AI is not configured, the script falls back to a rule-based writeup.
+You can disable AI and force rule-based writeups:
+- `python3 scripts/crawl_reports.py --no-ai`
 
 ## Quality gate
 Reports are only ingested if they contain sufficient technical detail (body length + payload/steps/affected URLs). Low-detail pages are skipped.
