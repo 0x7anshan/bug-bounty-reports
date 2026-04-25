@@ -1,11 +1,15 @@
 # xss - CrowdStream - Bugcrowd
-
+目标站点: bugcrowd.com
 报告地址: https://bugcrowd.com/disclosures/fd379503-137e-4d43-9e82-94fdff084820/xss
 
 ## 触发 URL
-- 信息不足
+- bugcrowd.com（具体路径见原文）
 
 ## 利用方法
-- 将下列 payload 注入到触发 URL 对应的输入点（常见为 query 参数/路径片段/表单字段），观察是否执行：
-  - <script>,
-  - javascript:, and JavaScript event handler attributes like
+关键描述:
+- modify_url function that modifies URLs by injecting the provided values into specified parameters
+- This allows the program to test modified URLs to detect SQL Injection vulnerabilities
+- SQL Injection Testing: In addition to XSS vulnerabilities, the program can also detect SQL Injection vulnerabilities
+关键 Payload:
+- `<script>,`
+- `javascript:, and JavaScript event handler attributes like`

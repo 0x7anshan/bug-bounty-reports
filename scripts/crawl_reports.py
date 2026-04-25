@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import urlparse, parse_qsl
+from urllib.parse import urlparse
 
 import requests
 
@@ -584,17 +584,10 @@ def discover_urls(session: requests.Session, platforms: list[str], *, max_urls: 
         # sitemap source
         urls.extend(discover_sitemap(session, "https://bugcrowd.com/sitemap.xml", url_filter=re.compile(r"/disclosures/"), max_urls=max_urls))
 
-    if "intigriti" in platforms:
-        # Focus on researcher blog/writeup pages (avoid crawling the whole marketing site)
-        urls.extend(
-            discover_sitemap(
-                session,
-                "https://www.intigriti.com/sitemap.xml",
-                # Exclude 'bug-bytes' newsletter posts (noise)
-                url_filter=re.compile(r"/researchers/blog/(?!bug-bytes)", re.I),
-                max_urls=max_urls,
-            )
-        )
+    # intigriti: their public pages are all blog/hackademy/marketing content,
+    # not real bug bounty disclosures.  Actual reports are behind login at
+    # app.intigriti.com.  Skip intigriti entirely until a proper discovery
+    # source is found.
 
     # yeswehack is SPA; no known public sitemap; leave for future extension.
 
@@ -737,65 +730,149 @@ def llm_chat(prompt: str) -> str:
 
 
 def generate_md(report: dict[str, Any]) -> str:
-    """Return markdown content (Chinese, readable)."""
+    """Return markdown content — concise Chinese analysis of trigger URL + exploitation method.
+
+    Instead of pasting the raw report body, we scan the text to extract:
+    - What URL/endpoint is vulnerable (trigger URL)
+    - How the vulnerability works and how to reproduce it (exploitation method)
+
+    Falls back to rule-based extraction when AI is not configured.
+    """
 
     title = report.get("title") or ""
     platform = report.get("platform") or ""
     vuln_type = report.get("vuln_type") or ""
-    platform_submitted_at = report.get("platform_submitted_at") or report.get("submitted_at")
-    submitted_at = report.get("submitted_at") or platform_submitted_at
-    report_url = report.get("report_url")
-    target_site = report.get("target_site")
+    report_url = report.get("report_url") or ""
+    target_site = report.get("target_site") or ""
     body = report.get("report_body") or ""
     payloads = (report.get("extracted") or {}).get("payloads") or []
     affected_urls = (report.get("extracted") or {}).get("affected_urls") or []
 
     if llm_enabled():
-        # Avoid pathological prompt sizes. Keep enough context for a useful writeup.
         report_for_llm = dict(report)
         rb = (report_for_llm.get("report_body") or "")
         if isinstance(rb, str) and len(rb) > 8000:
             report_for_llm["report_body"] = rb[:8000] + "\n…(truncated)…"
 
         prompt = f"""
-请基于下面的公开漏洞报告 JSON 内容，生成一份极简中文 Markdown，总结出两件事即可：
-1) 该漏洞的触发 URL（尽量具体到路径+参数；如果有多个，列出 top 5）
-2) 利用方法（复现步骤 + 关键 payload/PoC；如果信息不足要写“信息不足”，不要编造）
+你是一位资深安全研究员。请阅读下面的公开漏洞报告 JSON，然后用中文写出一份精炼的分析，只聚焦两件事：
 
-输出结构固定：
-- 标题
-- 触发 URL
-- 利用方法
+1) 触发 URL — 漏洞出现在哪个 URL / 端点 / 参数？尽量具体。列出 top 5。
+2) 利用方法 — 这个漏洞是怎么触发的？请用自己的话说明复现思路（哪个参数注入了什么，服务器如何未过滤/未转义），并列出关键 payload。不要照抄原文，要理解后总结。
 
-JSON（请只使用这些信息）：
+如果信息不足，写"信息不足"，不要编造。
+
+输出结构：
+# {title}
+## 触发 URL
+- ...
+## 利用方法
+...
+
+JSON：
 {json.dumps(report_for_llm, ensure_ascii=False)}
 """.strip()
         return llm_chat(prompt)
 
-    # Rule-based fallback (extremely concise per user requirement)
+    # ---- Rule-based fallback (no AI) ----
     lines: list[str] = []
-    lines.append(f"# {title}".strip())
+    lines.append(f"# {title}")
 
+    if target_site:
+        lines.append(f"目标站点: {target_site}")
     if report_url:
-        lines.append("")
         lines.append(f"报告地址: {report_url}")
 
+    # --- Trigger URL ---
     lines.append("")
     lines.append("## 触发 URL")
     if affected_urls:
         for u in affected_urls[:5]:
             lines.append(f"- {u}")
+    elif target_site:
+        # Try to extract URL-like fragments from the body
+        url_frags = re.findall(r'https?://[^\s<>"\']+', body)
+        seen = set()
+        for u in url_frags:
+            u = u.rstrip(".,;:)]}")
+            if u not in seen and target_site.replace("www.", "").split("//")[-1].split("/")[0] in u:
+                seen.add(u)
+                lines.append(f"- {u}")
+                if len(seen) >= 5:
+                    break
+        if not seen:
+            lines.append(f"- {target_site}（具体路径见原文）")
     else:
         lines.append("- 信息不足")
 
+    # --- Exploitation method ---
     lines.append("")
     lines.append("## 利用方法")
+
+    # Try to auto-summarize the exploitation from the body text
+    method_found = False
+
+    # Look for XSS-specific patterns in body to build a short explanation
+    body_lower = body.lower()
+
+    # Detect XSS sub-type
+    xss_type = ""
+    if "stored xss" in body_lower or "persistent xss" in body_lower:
+        xss_type = "存储型 XSS (Stored)"
+    elif "reflected xss" in body_lower or "reflection" in body_lower:
+        xss_type = "反射型 XSS (Reflected)"
+    elif "dom-based" in body_lower or "dom xss" in body_lower:
+        xss_type = "DOM 型 XSS"
+    elif "blind xss" in body_lower:
+        xss_type = "盲打 XSS (Blind)"
+
+    # Try to find the injection point description
+    injection_hints = []
+    # Pattern: "injected into X" / "X was reflected" / "parameter X"
+    for pat in [
+        r'(?:injected|injection|reflect|enter|input|submit|inject).*?(?:param|parameter|field|input|variable|query)\s*[=:]\s*["\']?(\w+)',
+        r'(?:param|parameter|field|input|variable|query)\s*[=:]\s*["\']?(\w+).*?(?:inject|reflect|xss|vuln)',
+        r'(?:via|through|in|on)\s+(?:the\s+)?(?:URL\s+)?(?:path|parameter|query|endpoint|field|input)\s*["\']?(\w+)["\']?',
+    ]:
+        for m in re.finditer(pat, body, flags=re.I):
+            hint = m.group(1).strip()
+            if hint and len(hint) < 40 and hint not in injection_hints:
+                injection_hints.append(hint)
+
+    if xss_type:
+        lines.append(f"漏洞类型: {xss_type}")
+        method_found = True
+
+    if injection_hints:
+        lines.append(f"注入参数: {', '.join(injection_hints[:5])}")
+        method_found = True
+
+    # Look for key action sentences in body (short sentences containing exploit verbs)
+    exploit_sentences = []
+    for sentence in re.split(r'[.\n]', body):
+        s = sentence.strip()
+        if len(s) < 20 or len(s) > 300:
+            continue
+        sl = s.lower()
+        if any(kw in sl for kw in ["inject", "payload", "execut", "alert(", "onerror", "<script", "reflected", "stored", "dom-b"]):
+            if s not in exploit_sentences:
+                exploit_sentences.append(s)
+            if len(exploit_sentences) >= 3:
+                break
+
+    if exploit_sentences:
+        lines.append("关键描述:")
+        for s in exploit_sentences[:3]:
+            lines.append(f"- {s}")
+        method_found = True
+
     if payloads:
-        # Keep it actionable but minimal.
-        lines.append("- 将下列 payload 注入到触发 URL 对应的输入点（常见为 query 参数/路径片段/表单字段），观察是否执行：")
-        for p in payloads[:8]:
-            lines.append(f"  - {p}")
-    else:
+        lines.append("关键 Payload:")
+        for p in payloads[:5]:
+            lines.append(f"- `{p}`")
+        method_found = True
+
+    if not method_found:
         lines.append("- 信息不足")
 
     return "\n".join(lines) + "\n"
@@ -874,7 +951,7 @@ def render_existing_reports() -> dict[str, Any]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--vuln", default="xss", help="vulnerability type (xss for now)")
-    ap.add_argument("--platforms", default="hackerone,bugcrowd,intigriti", help="comma-separated")
+    ap.add_argument("--platforms", default="hackerone,bugcrowd", help="comma-separated")
     ap.add_argument("--max-urls", type=int, default=120)
     ap.add_argument("--hacktivity-pages", type=int, default=3)
     ap.add_argument("--sleep", type=float, default=0.6)
