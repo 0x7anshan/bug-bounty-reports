@@ -1,0 +1,27 @@
+{
+  "schema": "bbreport.xss.v1",
+  "title": "Stored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": "2024-03-20T18:08:59Z",
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/a38df6f3-d632-47a2-b3d1-a65096db82c8/stored-cross-site-scripting-xss-in-blog-title-field-globe-community-blogs-community-blogs",
+  "target_site": "globe.gov",
+  "report_body": "Stored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nStored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs\n\nStored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs\n\nDisclosed by\n\nPolyxena\n\nEngagement\n\nNational Aeronautics and Space Administration (NASA) - Vulnerability Disclosure Program\n\nDisclosed date\n\n20 Mar 2024\nabout 2 years ago\n\nPriority\n\nP2\n\nBugcrowd's VRT priority rating\n\nStatus\n\nResolved\n\nThis vulnerability has been accepted and fixed\n\nSummary by Polyxena\n\nStored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs\n\nReport details\n\nSubmitted\n\n25 Feb 2024 03:38:23 UTC\n\nTarget Location\n\nhttps://globe.gov/\n\nTarget category\n\nWeb App\n\nVRT\n\nCross-Site Scripting (XSS) > Stored > Non-Privileged User to Anyone\n\nPriority\n\nP2\n\nBug\nURL\n\nhttps://www.globe.gov/globe-community/blogs/community-blogs\n\nDescription\n\nStored Cross-Site Scripting (XSS) in Blog Title Field - /globe-community/blogs/community-blogs\n\nOverview of the Vulnerability\n\nStored Cross-Site Scripting (XSS) is a severe security flaw that allows attackers to inject malicious scripts into web pages viewed by other users. This type of XSS is particularly dangerous because the injected script is saved by the server and then displayed to users, making it persistent across sessions. In the context of the Members section within community groups, a Stored XSS vulnerability was discovered. This flaw enables the attacker to execute arbitrary JavaScript code in the context of the victim's browser session when viewing the affected page.\n\nA Stored Cross-Site Scripting (XSS) vulnerability was discovered in the \ntitle field of the blog creation interface on \nglobe.gov. Specifically, when creating a new blog post, malicious scripts inserted into the title field were executed on the page \nglobe.gov/globe-community/blogs/community-blogs. Upon identifying and verifying the vulnerability, immediate action was taken to remove the compromised blog post to maintain a positive user experience and prevent any adverse effects on visitors to the site.\n\nBusiness Impact\n\nThe impact of a Stored XSS vulnerability extends beyond simple defacement of web pages:\n\nCompromise of User Sessions: The most immediate risk is the potential for session hijacking. Attackers can use XSS to steal session cookies, allowing them to impersonate victims and gain unauthorized access to their accounts.\n\nAccess to Sensitive Information: By executing malicious scripts, attackers can capture keystrokes, access browser history, and retrieve sensitive information displayed on the web page.\n\nSpread of Malware: XSS can serve as a delivery mechanism for malware, including spyware, ransomware, and worms. Users visiting the compromised web page may unknowingly download malicious software.\n\nPhishing Attacks: Attackers can use XSS to redirect users to phishing sites or display fake login prompts, tricking users into divulging their credentials.\n\nErosion of Trust: The presence of XSS vulnerabilities undermines user trust in the affected platform. Users may hesitate to engage with the community or enter personal information, impacting the platform's reputation and user engagement.\n\nConsidering these potential impacts, it's crucial to address Stored XSS vulnerabilities promptly to protect both users and the integrity of the platform.\n\nSteps to Reproduce\n\nLog into your account on \nglobe.gov.\n\nNavigate to your personal blog page, which can be found at \nglobe.gov/web/{{your profile name}}/home/blog.\n\nClick on the \nNew Entry button to create a new blog post.\n\nIn the title field, insert the XSS payload: \n<svg/onload=prompt(document.domain)>.\n\nPopulate the SubTitle and Content fields with any desired information.\n\nVisit \nhttps://www.globe.gov/globe-community/blogs/community-blogs to view the community blogs.\n\nObserve the execution of the script.\n\nPlease ensure to delete your blog post after testing to prevent impacting the user experience negatively.\n\nProof of Concept (PoC)\n\nKindly watch the proof of concept video attached in this report.\n\nProof%20Of%20Concept.mp4\n\nActivity\n\nPolyxena\n\nAll-time points\n\n468\n\nAccuracy\n\n98.3%\n\nCurrent rank\n\n1058th\n\nPriority percentile",
+  "discovered_at": "2026-04-28T13:45:48.173557+00:00",
+  "source": {
+    "fetched_at": "2026-04-28T13:45:48.173574+00:00",
+    "http_status": 200
+  },
+  "extracted": {
+    "payloads": [
+      "In the title field, insert the XSS payload:",
+      "<svg/onload=prompt(document.domain)>.",
+      "Proof of Concept (PoC)"
+    ],
+    "affected_urls": [
+      "https://globe.gov/",
+      "https://www.globe.gov/globe-community/blogs/community-blogs"
+    ]
+  }
+}
