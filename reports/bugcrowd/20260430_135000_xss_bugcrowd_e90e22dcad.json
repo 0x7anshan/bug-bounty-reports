@@ -1,0 +1,23 @@
+{
+  "schema": "bbreport.xss.v1",
+  "title": "XSS in image with user-controlled src - CrowdStream - Bugcrowd",
+  "vuln_type": "xss",
+  "vuln_type_raw": null,
+  "submitted_at": "2021-10-06T12:07:32Z",
+  "platform": "bugcrowd",
+  "report_url": "https://bugcrowd.com/disclosures/be7a6ce0-a09a-4e7e-9cbe-44f469550dbe/xss-in-image-with-user-controlled-src",
+  "target_site": null,
+  "report_body": "XSS in image with user-controlled src - CrowdStream - Bugcrowd\n\nHacker Login\n\nCustomer Login\n\nCrowdStream\n\nXSS in image with user-controlled src\n\nXSS in image with user-controlled src\n\nDisclosed by\n\nsesamestrong\n\nEngagement\n\nUndisclosed\n\nDisclosed date\n\n6 Oct 2021\nover 4 years ago\n\nReward\n\n$300\n\nPriority\n\nP3\n\nBugcrowd's VRT priority rating\n\nStatus\n\nResolved\n\nThis vulnerability has been accepted and fixed\n\nSummary by sesamestrong\n\nCross-site-scripting vulnerability\n\nI discovered a vulnerability in how Canvas handles broken images, which allows a cross-site-scripting attack on any Rich Content, like a post in a class discussion, a submission for an assignment, a description of an assignment, or an ePortfolio.\n\nThis vulnerability, like similar Rich Content Editor-based XSS vulnerabilities, could allow students to change their grades, find quiz answers, take control of their teacher's account, or make a worm that spreads throughout their school system, giving them access to many students' and teachers' accounts.\n\nI noticed that Canvas used an old version of jQuery, which is vulnerable to CVE-2015-9251; this means that when making an XHR, if the server specifies a \nContent-Type of \napplication/javascript, jQuery will execute whatever JS is in the response.\n\nI found a way to trigger this vulnerability using Canvas' broken image handler, which detects broken images, then makes an XHR via jQuery to the image URL in order to detect the status code.\n\nIn order to trigger this, an attacker must set up a web server that checks the Accept header of an incoming request. If the header is for an image, then the server will wait a couple of seconds before throwing a 404. Then, to deliver the JS payload via jQuery, when the Accept header is consistent with an XHR, the server sends a \nContent-Type of \napplication/javascript and delivers the payload.\n\nThen the attacker inserts an image into the Rich Content Editor with a \nsrc pointing to the web server URL, and posts it; whenever a student or teacher sees the post, their browser will run whatever Javascript code the attacker specified.\n\nActivity\n\nsesamestrong\n\nAll-time points\n\n10\n\nAccuracy\n\n100.0%\n\nCurrent rank\n\nN/A\n\nPriority percentile",
+  "discovered_at": "2026-04-30T13:50:00.674818+00:00",
+  "source": {
+    "fetched_at": "2026-04-30T13:50:00.674839+00:00",
+    "http_status": 200
+  },
+  "extracted": {
+    "payloads": [
+      "In order to trigger this, an attacker must set up a web server that checks the Accept header of an incoming request. If the header is for an image, then the server will wait a couple of seconds before throwing a 404. Then, to deliver the JS payload via jQuery, when the Accept header is consistent with an XHR, the server sends a",
+      "application/javascript and delivers the payload."
+    ],
+    "affected_urls": []
+  }
+}
